@@ -1,0 +1,591 @@
+<app-header></app-header>
+
+<main class="hero-section">
+  <app-hero></app-hero>
+
+  <app-categories></app-categories>
+
+  <section class="flash-deals-section">
+    <div class="deals-container">
+      <div class="deals-header">
+        <div class="deals-title-area">
+          <span class="badge badge-danger"><i class="fa-solid fa-fire"></i> OFERTA FLASH</span>
+          <h2 class="deals-title">Ofertas del día</h2>
+          <div class="deals-timer">
+            <span class="timer-label">Termina en:</span>
+            <div class="timer-box" id="timer-hours">00</div>
+            <span class="timer-colon">:</span>
+            <div class="timer-box" id="timer-minutes">05</div>
+            <span class="timer-colon">:</span>
+            <div class="timer-box" id="timer-seconds">00</div>
+          </div>
+        </div>
+        <div class="deals-nav-area">
+          <a href="#" class="view-all-link">Ver todas las ofertas <i class="fa-solid fa-arrow-right"></i></a>
+          <button class="nav-arrow prev-deals">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="nav-arrow next-deals">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="products-slider-container">
+        <div class="products-slide-deals active">
+          <div class="products-grid">
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-30%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776449462383.png" alt="GeForce RTX 4090" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">NVIDIA</span>
+                <h3 class="product-name">GeForce RTX 4090 24GB</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 2,599</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 1,799</span><span class="small-discount">-30%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 12 cuotas · S/ 150</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-25%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776449484740.png" alt="Ryzen 9 7950X" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">AMD</span>
+                <h3 class="product-name">Ryzen 9 7950X 16 cores</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 2,929</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 2,199</span><span class="small-discount">-25%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 12 cuotas · S/ 183</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-15%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776449488887.png" alt="Corsair RAM" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">CORSAIR</span>
+                <h3 class="product-name">Vengeance DDR5 64GB RGB</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 1,469</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 1,249</span><span class="small-discount">-15%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 12 cuotas · S/ 104</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-23%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776449494133.png" alt="Samsung SSD" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">SAMSUNG</span>
+                <h3 class="product-name">SSD 990 Pro 2TB NVMe</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 969</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 749</span><span class="small-discount">-23%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 12 cuotas · S/ 62</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-40%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776451650381.png" alt="Logitech Mouse" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">LOGITECH</span>
+                <h3 class="product-name">G Pro X Superlight Mouse</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 649</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 389</span><span class="small-discount">-40%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 12 cuotas · S/ 32</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-18%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776453894572.png" alt="ASUS Monitor" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">ASUS</span>
+                <h3 class="product-name">ROG Swift 27" 240Hz Monitor</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 2,890</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 2,369</span><span class="small-discount">-18%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 12 cuotas · S/ 197</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="products-slide-deals">
+          <div class="products-grid">
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-10%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776454943524.png" alt="HyperX Headset" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">HYPERX</span>
+                <h3 class="product-name">Cloud II Gaming Headset</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 335</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 299</span><span class="small-discount">-10%</span>
+                  </div>
+                </div>
+                <span class="installments">Llegada reciente</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-50%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-177644495014.png" alt="EVGA Power Supply" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">EVGA</span>
+                <h3 class="product-name">Power Supply 750W Gold</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 900</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 450</span><span class="small-discount">-50%</span>
+                  </div>
+                </div>
+                <span class="installments">Oferta limitada</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-20%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776450176480.png" alt="NZXT Cooler" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">NZXT</span>
+                <h3 class="product-name">Kraken X63 RGB Cooler</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 750</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 600</span><span class="small-discount">-20%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 6 cuotas · S/ 100</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-12%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776454938041.png" alt="Razer Keyboard" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">RAZER</span>
+                <h3 class="product-name">Huntsman Mini 60%</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 500</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 440</span><span class="small-discount">-12%</span>
+                  </div>
+                </div>
+                <span class="installments">Llévatelo en 3 cuotas · S/ 146</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-35%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776454456158.png" alt="Xbox Controller" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">XBOX</span>
+                <h3 class="product-name">Mando Inalámbrico Carbon Black</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 350</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 227</span><span class="small-discount">-35%</span>
+                  </div>
+                </div>
+                <span class="installments">Pocas unidades</span>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="card-image-wrapper">
+                <span class="discount-badge">-5%</span>
+                <button class="btn-heart">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="product-placeholder" style="background: transparent;">
+                  <img src="img/generated-1776454694094.png" alt="Elgato Facecam" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="product-brand">ELGATO</span>
+                <h3 class="product-name">Facecam Pro 4K60</h3>
+                <div class="product-prices">
+                  <span class="old-price">Antes: S/ 1,400</span>
+                  <div class="new-price-row">
+                    <span class="new-price">S/ 1,330</span><span class="small-discount">-5%</span>
+                  </div>
+                </div>
+                <span class="installments">Ideal para streaming</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="promo-banners-section">
+    <div class="promo-banners-grid">
+      <div class="promo-banner banner-yellow">
+        <div class="promo-content">
+          <span class="promo-tag">GAMING</span>
+          <h3 class="promo-title">Setups<br />completos</h3>
+          <p class="promo-subtitle">Desde S/ 3,999</p>
+          <a href="#" class="promo-btn btn-brown">Comprar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="promo-image">
+          <div class="placeholder-box" style="background: transparent;">
+            <img src="img/generated-1776449606933.png" alt="Setup Completo" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+        </div>
+      </div>
+
+      <div class="promo-banner banner-blue">
+        <div class="promo-content">
+          <span class="promo-tag">OFICINA</span>
+          <h3 class="promo-title">Monitores<br />4K HDR</h3>
+          <p class="promo-subtitle">Hasta -30% off</p>
+          <a href="#" class="promo-btn btn-darkblue">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="promo-image">
+          <div class="placeholder-box" style="background: transparent;">
+            <img src="img/generated-1776453937638.png" alt="Monitor 4K" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+        </div>
+      </div>
+
+      <div class="promo-banner banner-pink">
+        <div class="promo-content">
+          <span class="promo-tag">STREAMING</span>
+          <h3 class="promo-title">Kits para<br />streamers</h3>
+          <p class="promo-subtitle">12 cuotas sin interés</p>
+          <a href="#" class="promo-btn btn-darkred">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="promo-image">
+          <div class="placeholder-box" style="background: transparent;">
+            <img src="img/generated-1776453938068.png" alt="Kit Streamer" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="top-sellers-section">
+    <div class="sellers-container">
+      <div class="sellers-header">
+        <div>
+          <span class="sellers-tag">TOP SELLERS</span>
+          <h2 class="sellers-title">Lo más vendido en PixelBase</h2>
+        </div>
+
+        <div class="filter-menu">
+          <button class="filter-btn active" data-filter="todos">
+            Todos
+          </button>
+          <button class="filter-btn" data-filter="gaming">Gaming</button>
+          <button class="filter-btn" data-filter="laptops">Laptops</button>
+          <button class="filter-btn" data-filter="perifericos">
+            Periféricos
+          </button>
+        </div>
+      </div>
+
+      <div class="top-sellers-grid">
+        <article class="product-card seller-card" data-category="gaming">
+          <div class="card-image-wrapper">
+            <span class="discount-badge">-30%</span>
+            <button class="btn-heart">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <div class="product-placeholder" style="background: transparent;">
+              <img src="img/generated-1776449462383.png" alt="RTX 4090" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="product-brand">NVIDIA</span>
+            <h3 class="product-name">GeForce RTX 4090 24GB</h3>
+            <div class="product-prices">
+              <span class="old-price">Antes: S/ 2,599</span>
+              <div class="new-price-row">
+                <span class="new-price">S/ 1,799</span><span class="small-discount">-30%</span>
+              </div>
+            </div>
+            <span class="installments">Llévatelo en 12 cuotas · S/ 150</span>
+          </div>
+        </article>
+
+        <article class="product-card seller-card" data-category="laptops">
+          <div class="card-image-wrapper">
+            <span class="discount-badge">-10%</span>
+            <button class="btn-heart">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <div class="product-placeholder" style="background: transparent;">
+              <img src="img/generated-1776449606200.png" alt="ASUS Laptop" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="product-brand">ASUS</span>
+            <h3 class="product-name">ROG Strix G15 Advantage Edition</h3>
+            <div class="product-prices">
+              <span class="old-price">Antes: S/ 6,500</span>
+              <div class="new-price-row">
+                <span class="new-price">S/ 5,850</span><span class="small-discount">-10%</span>
+              </div>
+            </div>
+            <span class="installments">Envío gratis</span>
+          </div>
+        </article>
+
+        <article class="product-card seller-card" data-category="gaming">
+          <div class="card-image-wrapper">
+            <span class="discount-badge">-15%</span>
+            <button class="btn-heart">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <div class="product-placeholder" style="background: transparent;">
+              <img src="img/generated-1776450244346.png" alt="Ryzen CPU" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="product-brand">AMD</span>
+            <h3 class="product-name">Ryzen 7 7800X3D</h3>
+            <div class="product-prices">
+              <span class="old-price">Antes: S/ 1,800</span>
+              <div class="new-price-row">
+                <span class="new-price">S/ 1,530</span><span class="small-discount">-15%</span>
+              </div>
+            </div>
+            <span class="installments">Últimas unidades</span>
+          </div>
+        </article>
+
+        <article class="product-card seller-card" data-category="perifericos">
+          <div class="card-image-wrapper">
+            <span class="discount-badge">-20%</span>
+            <button class="btn-heart">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <div class="product-placeholder" style="background: transparent;">
+              <img src="img/generated-1776454456158.png" alt="Razer Mouse" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="product-brand">RAZER</span>
+            <h3 class="product-name">DeathAdder V3 Pro Wireless</h3>
+            <div class="product-prices">
+              <span class="old-price">Antes: S/ 650</span>
+              <div class="new-price-row">
+                <span class="new-price">S/ 520</span><span class="small-discount">-20%</span>
+              </div>
+            </div>
+            <span class="installments">Stock disponible</span>
+          </div>
+        </article>
+
+        <article class="product-card seller-card" data-category="perifericos">
+          <div class="card-image-wrapper">
+            <span class="discount-badge">-5%</span>
+            <button class="btn-heart">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            <div class="product-placeholder" style="background: transparent;">
+              <img src="img/generated-1776454451190.png" alt="Corsair Keyboard" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="card-info">
+            <span class="product-brand">CORSAIR</span>
+            <h3 class="product-name">K70 RGB PRO Mechanical</h3>
+            <div class="product-prices">
+              <span class="old-price">Antes: S/ 800</span>
+              <div class="new-price-row">
+                <span class="new-price">S/ 760</span><span class="small-discount">-5%</span>
+              </div>
+            </div>
+            <span class="installments">Llévatelo en 6 cuotas</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="prime-subscription-section">
+    <div class="prime-banner">
+      <div class="prime-content">
+        <span class="prime-badge"><i class="fa-solid fa-circle"></i> PIXELBASE PRIME</span>
+        <h2 class="prime-title">
+          Envío gratis • Descuentos exclusivos • Soporte 24/7
+        </h2>
+        <p class="prime-description">
+          Únete a la membresía Prime y disfruta beneficios exclusivos por
+          solo S/ 14.90/mes.
+        </p>
+        <a href="#" class="btn-prime">Suscribirme ahora <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="prime-decoration">
+        <div class="glow-circle"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brands-section">
+    <div class="brands-container">
+      <div class="brands-header">
+        <h2 class="brands-title">Marcas que nos respaldan</h2>
+        <a href="#" class="view-all-brands">Ver todas <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="brands-grid">
+        <div class="brand-card">
+          <img src="img/generated-1776454473014.png" alt="NVIDIA" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454472490.png" alt="AMD" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454473214.png" alt="Intel" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454470392.png" alt="Samsung" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454467490.png" alt="Corsair" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454469370.png" alt="MSI" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454477577.png" alt="ASUS" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+        <div class="brand-card">
+          <img src="img/generated-1776454465861.png" alt="Logitech" style="max-height: 40px; width: auto; object-fit: contain;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-download-section">
+    <div class="app-banner">
+      <div class="app-text">
+        <h2 class="app-title">Descarga la app de PixelBase</h2>
+        <p class="app-subtitle">
+          Ofertas exclusives y envío express. Solo en la app.
+        </p>
+      </div>
+      <div class="app-buttons">
+        <a href="#" class="store-btn">
+          <i class="fa-brands fa-apple"></i>
+          <div class="btn-text">
+            <span>Descarga en</span>
+            <strong>App Store</strong>
+          </div>
+        </a>
+        <a href="#" class="store-btn">
+          <i class="fa-brands fa-google-play"></i>
+          <div class="btn-text">
+            <span>Disponible en</span>
+            <strong>Google Play</strong>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+</main>

@@ -26,6 +26,9 @@
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "scripts": [
+              "public/js/main.js"
             ]
           },
           "configurations": {
