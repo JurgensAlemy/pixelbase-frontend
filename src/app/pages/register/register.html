@@ -1,0 +1,71 @@
+<div class="register-body">
+    <div class="register-wrapper">
+        <div class="register-card">
+            <div class="form-header">
+                <h2>Crear cuenta</h2>
+                <p>Completa los datos para registrarte en PixelBase.</p>
+            </div>
+
+            <form class="register-form" [formGroup]="form" (ngSubmit)="submit()">
+                <div class="input-group">
+                    <label>Correo electrónico</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" formControlName="email" placeholder="tu@email.com">
+                    </div>
+                    @if (email.touched && email.invalid) {
+                        <small class="field-error">
+                            @if (email.errors?.['required']) { Email es obligatorio }
+                            @else if (email.errors?.['email']) { Formato de email inválido }
+                        </small>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" formControlName="password" placeholder="Mínimo 12 caracteres">
+                    </div>
+                    @if (password.touched && password.invalid) {
+                        <small class="field-error">
+                            @if (password.errors?.['required']) { Contraseña es obligatoria }
+                            @else if (password.errors?.['minlength']) { Mínimo 12 caracteres }
+                            @else if (password.errors?.['maxlength']) { Máximo 128 caracteres }
+                        </small>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label>Confirmar contraseña</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña">
+                    </div>
+                    @if (confirmPassword.touched && confirmPassword.errors?.['required']) {
+                        <small class="field-error">Confirma tu contraseña</small>
+                    }
+                    @if (form.errors?.['mismatch'] && confirmPassword.touched) {
+                        <small class="field-error">Las contraseñas no coinciden</small>
+                    }
+                </div>
+
+                @if (errorMessage()) {
+                    <div class="error-message">{{ errorMessage() }}</div>
+                }
+
+                <button type="submit" class="btn-register" [disabled]="loading()">
+                    @if (loading()) {
+                        Creando cuenta...
+                    } @else {
+                        Crear cuenta
+                    }
+                </button>
+
+                <div class="form-footer">
+                    <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

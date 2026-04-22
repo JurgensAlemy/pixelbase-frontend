@@ -15,7 +15,7 @@ import { Footer } from '../../components/footer/footer';
 
   // 3. Aquí Angular ya sabe que tus archivos no llevan ".component"
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrl: './home.scss'
 })
 export class Home {
   // La lógica de tu Home va aquí

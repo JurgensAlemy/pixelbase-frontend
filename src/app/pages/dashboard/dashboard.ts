@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css' // <--- Asegúrate de que esta línea esté así
+  styleUrl: './dashboard.scss' // <--- Asegúrate de que esta línea esté así
 })
 export class Dashboard {}

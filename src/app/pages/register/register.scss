@@ -1,0 +1,133 @@
+$primary: #ff6b35;
+$danger: #d33;
+$text: #333;
+$muted: #888;
+$border: #e0e0e0;
+
+.register-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.register-wrapper {
+  width: 100%;
+  max-width: 480px;
+}
+
+.register-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+
+  .form-header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h2 {
+      font-size: 1.75rem;
+      color: $text;
+      margin: 0 0 0.5rem;
+    }
+
+    p {
+      color: $muted;
+      margin: 0;
+    }
+  }
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: $text;
+    }
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    i {
+      position: absolute;
+      left: 14px;
+      color: $muted;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: 1px solid $border;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+      }
+    }
+  }
+
+  .field-error {
+    color: $danger;
+    font-size: 0.8rem;
+  }
+
+  .error-message {
+    background: #fee;
+    color: $danger;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .btn-register {
+    background: $primary;
+    color: #fff;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      opacity: 0.9;
+    }
+  }
+
+  .form-footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: $muted;
+
+    a {
+      color: $primary;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  }
+}

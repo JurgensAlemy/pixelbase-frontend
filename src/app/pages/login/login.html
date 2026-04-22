@@ -35,13 +35,19 @@
                     <p>Ingresa tus credenciales para acceder al panel administrativo.</p>
                 </div>
 
-                <form class="login-form">
+                <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
                     <div class="input-group">
                         <label>Correo electrónico</label>
                         <div class="input-wrapper">
                             <i class="fa-regular fa-envelope"></i>
-                            <input type="email" placeholder="admin@pixelbase.io" required>
+                            <input type="email" formControlName="email" placeholder="admin@pixelbase.io">
                         </div>
+                        @if (email.touched && email.invalid) {
+                            <small class="field-error">
+                                @if (email.errors?.['required']) { Email es obligatorio }
+                                @else if (email.errors?.['email']) { Formato de email inválido }
+                            </small>
+                        }
                     </div>
 
                     <div class="input-group">
@@ -51,9 +57,15 @@
                         </div>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-lock"></i>
-                            <input type="password" placeholder="••••••••••••" required>
+                            <input type="password" formControlName="password" placeholder="••••••••••••">
                             <i class="fa-regular fa-eye toggle-password"></i>
                         </div>
+                        @if (password.touched && password.invalid) {
+                            <small class="field-error">
+                                @if (password.errors?.['required']) { Contraseña es obligatoria }
+                                @else if (password.errors?.['minlength']) { Mínimo 12 caracteres }
+                            </small>
+                        }
                     </div>
 
                     <div class="form-options">
@@ -64,8 +76,16 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn-login">
-                        Iniciar sesión <i class="fa-solid fa-arrow-right"></i>
+                    @if (errorMessage()) {
+                        <div class="error-message">{{ errorMessage() }}</div>
+                    }
+
+                    <button type="submit" class="btn-login" [disabled]="loading()">
+                        @if (loading()) {
+                            Iniciando sesión...
+                        } @else {
+                            Iniciar sesión <i class="fa-solid fa-arrow-right"></i>
+                        }
                     </button>
 
                     <div class="separator">
@@ -73,7 +93,7 @@
                     </div>
 
                     <div class="form-footer">
-                        <p>¿Problemas al iniciar? <a href="#">Contacta al administrador</a></p>
+                        <p>¿No tienes cuenta? <a routerLink="/register">Regístrate aquí</a></p>
                     </div>
                 </form>
             </div>
