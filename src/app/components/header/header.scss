@@ -1,0 +1,308 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+// ============================================================
+// TOP BAR (delgada, fondo navy)
+// ============================================================
+.top-bar {
+  background-color: $navy;
+  color: $white;
+  font-size: 0.75rem;
+
+  .top-bar-inner {
+    @include container;
+    padding-top: $spacing-2;
+    padding-bottom: $spacing-2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+  }
+
+  .top-bar-left,
+  .top-bar-right {
+    display: flex;
+    gap: $spacing-5;
+    flex-wrap: wrap;
+  }
+
+  a:hover { color: $gray-300; }
+
+  // En móvil: solo el primer link de cada lado
+  @include md-down {
+    font-size: 0.7rem;
+
+    .top-bar-left a:not(:first-child),
+    .top-bar-right a:not(:last-child) {
+      display: none;
+    }
+    .top-bar-left,
+    .top-bar-right {
+      gap: 0;
+    }
+  }
+}
+
+// ============================================================
+// MAIN HEADER (logo + buscador + acciones)
+// ============================================================
+.main-header {
+  background-color: $white;
+  border-bottom: 1px solid $color-border;
+
+  .main-header-inner {
+    @include container;
+    padding-top: $spacing-4;
+    padding-bottom: $spacing-4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-5;
+
+    // En móvil el buscador va en una fila aparte
+    @include md-down {
+      flex-wrap: wrap;
+      gap: $spacing-3;
+    }
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+
+      @include md-down { height: 36px; }
+    }
+
+    h2 {
+      color: $navy;
+      font-weight: $font-weight-bold;
+      font-size: 1.5rem;
+      white-space: nowrap;
+      margin: 0;
+    }
+  }
+}
+
+.search-container {
+  display: flex;
+  flex: 1;
+  max-width: 600px;
+  min-width: 240px;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  overflow: hidden;
+  height: 45px;
+  background-color: $gray-100;
+
+  // En móvil ocupa toda la fila
+  @include md-down {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .search-category {
+    border: none;
+    padding: 0 $spacing-4;
+    background-color: $gray-100;
+    border-right: 1px solid $color-border;
+    color: $color-text;
+    outline: none;
+    font-size: 0.875rem;
+
+    @include md-down { display: none; }
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    padding: 0 $spacing-4;
+    outline: none;
+    min-width: 0;
+    background: transparent;
+    font-size: 0.9rem;
+  }
+
+  .search-button {
+    background-color: $primary;
+    color: $white;
+    border: none;
+    padding: 0 $spacing-5;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color $transition-base;
+
+    &:hover { background-color: $primary-dark; }
+  }
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-6;
+
+  @include md-down { gap: $spacing-3; }
+
+  .action-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    color: $color-text;
+
+    i { font-size: 1.25rem; }
+
+    .action-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.75rem;
+
+      strong { font-size: 0.85rem; }
+
+      @include md-down { display: none; }
+    }
+
+    // En móvil solo se muestran los iconos "favoritos" (no "mi cuenta")
+    &:first-of-type {
+      @include md-down { display: none; }
+    }
+  }
+}
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  background-color: rgba($primary, 0.1);
+  color: $primary;
+  padding: $spacing-2 $spacing-5;
+  border-radius: $radius-full;
+  position: relative;
+  font-weight: $font-weight-bold;
+  white-space: nowrap;
+  transition: background-color $transition-base;
+
+  &:hover { background-color: rgba($primary, 0.15); }
+
+  // En móvil solo icono + badge
+  @include md-down {
+    padding: $spacing-2 $spacing-3;
+
+    strong { display: none; }
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: $danger;
+    color: $white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    @include flex-center;
+    font-size: 0.7rem;
+    font-weight: $font-weight-bold;
+  }
+}
+
+// ============================================================
+// NAV BAR (links de navegación)
+// ============================================================
+.nav-bar {
+  background-color: $white;
+  border-bottom: 1px solid $color-border;
+
+  .nav-bar-inner {
+    @include container;
+    padding-top: $spacing-3;
+    padding-bottom: $spacing-3;
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+
+    // En móvil: scroll horizontal
+    @include md-down {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      gap: $spacing-3;
+
+      &::-webkit-scrollbar { display: none; }
+    }
+  }
+
+  .btn-categories {
+    background-color: $primary;
+    color: $white;
+    border: none;
+    padding: $spacing-3 $spacing-5;
+    border-radius: $radius-full;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    display: flex;
+    gap: $spacing-2;
+    align-items: center;
+    white-space: nowrap;
+    transition: background-color $transition-base;
+    flex-shrink: 0;
+
+    &:hover { background-color: $primary-dark; }
+
+    @include md-down {
+      padding: $spacing-2 $spacing-4;
+      font-size: 0.85rem;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: $spacing-3;
+    flex: 1;
+
+    @include md-down {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+
+      &::-webkit-scrollbar { display: none; }
+    }
+
+    a {
+      color: $color-text;
+      font-weight: 500;
+      font-size: 0.875rem;
+      padding: $spacing-2 $spacing-4;
+      border-radius: $radius-full;
+      transition: all $transition-slow;
+      white-space: nowrap;
+      flex-shrink: 0;
+
+      &:hover {
+        color: $white;
+        background-color: $primary;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba($primary, 0.25);
+      }
+    }
+  }
+
+  .flash-offers {
+    background-color: #FFF3CD;
+    color: #856404;
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-full;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    strong { color: $danger; }
+
+    @include md-down { display: none; }
+  }
+}

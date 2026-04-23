@@ -1,0 +1,268 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+// ============================================================
+// FOOTER — Diseño basado en prototipo Pencil (node svxCM)
+// Fondo pastel claro. Trust bar blanco sobre fondo. Links gris.
+// Métodos de pago en pills blancos. Certificados y copy al final.
+// ============================================================
+
+.main-footer {
+  background-color: #EEF2F7;
+  color: $color-text;
+  margin-top: $spacing-12;
+}
+
+// ============================================================
+// TRUST BAR (sección superior con íconos de confianza)
+// ============================================================
+.trust-bar-container {
+  @include container;
+  padding-top: $spacing-10;
+  padding-bottom: $spacing-10;
+}
+
+.trust-bar {
+  background-color: $white;
+  border-radius: $radius-xl;
+  padding: $spacing-6 $spacing-8;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  @include md-down { grid-template-columns: repeat(2, 1fr); }
+  @include sm-down { grid-template-columns: 1fr; }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+  }
+
+  .trust-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    @include flex-center;
+    flex-shrink: 0;
+    font-size: 1rem;
+
+    &.bg-lblue   { background-color: #E0F2FE; color: #0284C7; }
+    &.bg-lgreen  { background-color: #DCFCE7; color: #16A34A; }
+    &.bg-lyellow { background-color: #FEF9C3; color: #CA8A04; }
+    &.bg-lpurple { background-color: #F3E8FF; color: #9333EA; }
+  }
+
+  .trust-text {
+    display: flex;
+    flex-direction: column;
+
+    strong { font-size: 0.875rem; color: $navy; font-weight: $font-weight-bold; }
+    span   { font-size: 0.75rem; color: $color-text-muted; }
+  }
+}
+
+// ============================================================
+// FOOTER COLUMNS (Info + Mi Cuenta + Ayuda + Empresa + Síguenos)
+// ============================================================
+.footer-links-section {
+  @include container;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  gap: $spacing-8;
+  padding-top: $spacing-6;
+  padding-bottom: $spacing-10;
+
+  @media (max-width: $bp-lg) {
+    grid-template-columns: repeat(3, 1fr);
+    .footer-info { grid-column: 1 / -1; }
+  }
+  @include md-down { grid-template-columns: repeat(2, 1fr); }
+  @include sm-down { grid-template-columns: 1fr; }
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+
+  .footer-logo {
+    width: 56px;
+    height: 56px;
+    background: $gray-200;
+    border-radius: $radius-md;
+    @include flex-center;
+    overflow: hidden;
+    margin: 0;
+
+    img { width: 100%; height: 100%; object-fit: contain; }
+  }
+
+  p {
+    color: $color-text-muted;
+    line-height: 1.6;
+    font-size: 0.85rem;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: $color-text;
+      font-weight: $font-weight-semibold;
+    }
+
+    i {
+      color: $primary;
+      margin-right: $spacing-2;
+    }
+  }
+}
+
+.footer-column {
+  h3 {
+    font-size: 0.8rem;
+    font-weight: $font-weight-bold;
+    letter-spacing: 1.5px;
+    margin-bottom: $spacing-5;
+    color: $navy;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-3;
+  }
+
+  a {
+    color: $color-text-muted;
+    font-size: 0.85rem;
+    transition: color $transition-base;
+
+    &:hover { color: $primary; }
+  }
+}
+
+.social-links {
+  display: flex;
+  gap: $spacing-2;
+  margin-bottom: $spacing-4;
+
+  a {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    @include flex-center;
+    color: $white;
+    font-size: 0.8rem;
+    transition: transform $transition-base;
+
+    &:hover { transform: translateY(-3px); }
+
+    &.social-fb { background-color: #1877F2; }
+    &.social-ig { background: linear-gradient(45deg, #F09433, #E6683C, #DC2743, #CC2366, #BC1888); }
+    &.social-yt { background-color: #FF0000; }
+    &.social-tw { background-color: #000000; }
+  }
+}
+
+.newsletter-text {
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  line-height: 1.5;
+}
+
+// ============================================================
+// FOOTER BOTTOM (métodos de pago + certificados)
+// ============================================================
+.footer-bottom {
+  @include container;
+  border-top: 1px solid rgba($navy, 0.08);
+  padding-top: $spacing-5;
+  padding-bottom: $spacing-5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $spacing-6;
+  flex-wrap: wrap;
+
+  .bottom-label {
+    display: block;
+    font-size: 0.7rem;
+    color: $color-text-muted;
+    letter-spacing: 1.5px;
+    margin-bottom: $spacing-3;
+    font-weight: $font-weight-semibold;
+  }
+
+  .payment-grid,
+  .cert-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+  }
+
+  .pay-card {
+    background-color: $white;
+    color: $navy;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-sm;
+    font-size: 0.7rem;
+    font-weight: $font-weight-bold;
+    border: 1px solid $color-border;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .cert-item {
+    background-color: $white;
+    color: $success;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-sm;
+    font-size: 0.75rem;
+    font-weight: $font-weight-semibold;
+    border: 1px solid $color-border;
+
+    i { margin-right: $spacing-1; }
+  }
+}
+
+// ============================================================
+// COPYRIGHT
+// ============================================================
+.footer-copy {
+  @include container;
+  border-top: 1px solid rgba($navy, 0.08);
+  padding-top: $spacing-4;
+  padding-bottom: $spacing-4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  color: $color-text-muted;
+
+  p { margin: 0; }
+
+  .copy-links {
+    display: flex;
+    gap: $spacing-5;
+    flex-wrap: wrap;
+
+    a:hover { color: $primary; }
+  }
+
+  @include md-down {
+    justify-content: center;
+    text-align: center;
+  }
+}

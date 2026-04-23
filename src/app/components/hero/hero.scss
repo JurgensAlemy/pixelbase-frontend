@@ -1,0 +1,246 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+:host {
+  display: block;
+  @include container;
+  padding-top: $spacing-8;
+  padding-bottom: $spacing-4;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: $spacing-5;
+  min-height: 400px;
+
+  @include md-down {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+}
+
+// ============================================================
+// BANNER PRINCIPAL (Carrusel) — basado en prototipo XpM14
+// ============================================================
+.main-banner {
+  background: linear-gradient(135deg, $navy-soft 0%, $navy 100%);
+  border-radius: $radius-xl;
+  position: relative;
+  color: $white;
+  overflow: hidden;
+  min-height: 350px;
+
+  @include md-down { min-height: 280px; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: $spacing-10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+    }
+
+    @include md-down { padding: $spacing-6; }
+  }
+
+  .main-banner-content {
+    flex: 1;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-4;
+  }
+
+  .badge {
+    padding: $spacing-1 $spacing-4;
+    border-radius: $radius-full;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    &.badge-warning {
+      background-color: #ffed4a;
+      color: #856404;
+    }
+  }
+
+  .banner-title {
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin-bottom: -$spacing-2;
+  }
+
+  .discount-text {
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+
+    @include md-down { font-size: 3.5rem; }
+  }
+
+  .discount-small {
+    font-size: 1.875rem;
+    color: #facc15;
+  }
+
+  .banner-desc {
+    max-width: 350px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: rgba($white, 0.85);
+  }
+
+  .btn-yellow {
+    background-color: #facc15;
+    color: $black;
+    padding: $spacing-3 $spacing-6;
+    border-radius: $radius-full;
+    font-weight: $font-weight-bold;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2;
+    transition: transform $transition-base;
+
+    &:hover { transform: scale(1.05); }
+  }
+
+  .main-banner-image {
+    flex: 1;
+    @include flex-center;
+    height: 100%;
+    z-index: 1;
+
+    @include md-down { display: none; }
+  }
+
+  .img-placeholder {
+    width: 100%;
+    max-width: 300px;
+    height: 250px;
+    border-radius: $radius-lg;
+    overflow: hidden;
+  }
+}
+
+// --- Controles del slider ---
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: $white;
+  color: $color-text;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: $shadow-md;
+  z-index: 3;
+  transition: background-color $transition-base;
+
+  &:hover { background-color: $gray-100; }
+  &.prev { left: $spacing-5; }
+  &.next { right: $spacing-5; }
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: $spacing-5;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: $spacing-2;
+  z-index: 3;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba($white, 0.4);
+    cursor: pointer;
+    transition: all $transition-slow;
+
+    &.active {
+      background-color: $white;
+      width: 25px;
+      border-radius: 10px;
+    }
+  }
+}
+
+// ============================================================
+// BANNERS LATERALES
+// ============================================================
+.side-banners {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+
+  @include md-down {
+    flex-direction: row;
+    gap: $spacing-4;
+  }
+  @include sm-down {
+    flex-direction: column;
+  }
+}
+
+.side-banner {
+  flex: 1;
+  border-radius: $radius-xl;
+  padding: $spacing-8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $spacing-2;
+  position: relative;
+  transition: transform $transition-slow;
+  min-height: 180px;
+
+  &:hover { transform: translateY(-5px); }
+
+  &.banner-pink  { background-color: #ffe4e6; }
+  &.banner-green { background-color: #d1fae5; }
+
+  h3 {
+    color: $color-text;
+    font-size: 1.375rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: $spacing-5;
+  }
+}
+
+.badge-text {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+
+  &.pink-text  { color: #e11d48; }
+  &.green-text { color: #059669; }
+}
+
+.link-arrow {
+  font-weight: $font-weight-bold;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+
+  &:hover { text-decoration: underline; }
+  &.pink-text  { color: #e11d48; }
+  &.green-text { color: #059669; }
+}

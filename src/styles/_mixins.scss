@@ -1,0 +1,106 @@
+// ============================================================
+// PixelBase — Mixins reutilizables
+// ============================================================
+
+@use 'variables' as *;
+
+// --- Mobile-first media queries ---
+@mixin sm-up   { @media (min-width: #{$bp-sm}) { @content; } }
+@mixin md-up   { @media (min-width: #{$bp-md}) { @content; } }
+@mixin lg-up   { @media (min-width: #{$bp-lg}) { @content; } }
+@mixin xl-up   { @media (min-width: #{$bp-xl}) { @content; } }
+
+// --- Desktop-first ---
+@mixin md-down { @media (max-width: #{$bp-md - 1}) { @content; } }
+@mixin sm-down { @media (max-width: #{$bp-sm - 1}) { @content; } }
+
+// --- Container centrado con padding responsive ---
+// Garantiza que header, footer y cualquier página tengan
+// el mismo padding lateral y un ancho máximo consistente.
+@mixin container {
+  width: 100%;
+  max-width: $layout-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $layout-padding-x-mobile;
+  padding-right: $layout-padding-x-mobile;
+
+  @include md-up {
+    padding-left: $layout-padding-x-tablet;
+    padding-right: $layout-padding-x-tablet;
+  }
+
+  @include lg-up {
+    padding-left: $layout-padding-x-desktop;
+    padding-right: $layout-padding-x-desktop;
+  }
+}
+
+// --- Flexbox helpers ---
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// --- Botón base ---
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  border: none;
+  border-radius: $radius-md;
+  padding: $spacing-3 $spacing-5;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// --- Card base ---
+@mixin card {
+  background: $color-surface;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+}
+
+// --- Input base ---
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  font-size: 0.95rem;
+  background: $white;
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+
+  &::placeholder {
+    color: $gray-500;
+  }
+}
+
+// --- Truncado de texto ---
+@mixin truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

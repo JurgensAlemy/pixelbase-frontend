@@ -1,0 +1,97 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+:host {
+  display: block;
+  @include container;
+  padding-top: $spacing-6;
+  padding-bottom: $spacing-10;
+}
+
+.categories-container {
+  background-color: $white;
+  border-radius: $radius-xl;
+  padding: $spacing-8 $spacing-10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: $shadow-sm;
+  overflow-x: auto;
+  gap: $spacing-5;
+
+  &::-webkit-scrollbar { display: none; }
+
+  // En tablet/móvil: cambiar a grid 5x2 (como prototipo móvil)
+  @include md-down {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: $spacing-5 $spacing-4;
+    gap: $spacing-4;
+    justify-items: center;
+  }
+
+  @include sm-down {
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-3;
+  }
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2;
+  transition: transform $transition-slow;
+  min-width: 85px;
+  flex-shrink: 0;
+
+  @include md-down { min-width: 0; }
+
+  &:hover {
+    transform: translateY(-5px);
+
+    .category-icon { box-shadow: $shadow-lg; }
+  }
+}
+
+.category-icon {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  @include flex-center;
+  font-size: 2rem;
+  transition: box-shadow $transition-slow;
+
+  @include md-down {
+    width: 60px;
+    height: 60px;
+    font-size: 1.375rem;
+  }
+
+  @include sm-down {
+    width: 52px;
+    height: 52px;
+    font-size: 1.25rem;
+  }
+}
+
+.category-name {
+  font-size: 0.8rem;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  text-align: center;
+
+  @include md-down { font-size: 0.7rem; }
+}
+
+// Fondos pasteles
+.bg-blue   { background-color: #E0F2FE; color: #0284C7; }
+.bg-purple { background-color: #F3E8FF; color: #9333EA; }
+.bg-green  { background-color: #DCFCE7; color: #16A34A; }
+.bg-yellow { background-color: #FEF9C3; color: #CA8A04; }
+.bg-red    { background-color: #FEE2E2; color: #DC2626; }
+.bg-pink   { background-color: #FCE7F3; color: #DB2777; }
+.bg-cyan   { background-color: #CFFAFE; color: #0891B2; }
+.bg-teal   { background-color: #CCFBF1; color: #0D9488; }
+.bg-gray   { background-color: #F1F5F9; color: #475569; }
+.bg-orange { background-color: #FFEDD5; color: #EA580C; }

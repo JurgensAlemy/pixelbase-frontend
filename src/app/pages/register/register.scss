@@ -1,16 +1,11 @@
-$primary: #ff6b35;
-$danger: #d33;
-$text: #333;
-$muted: #888;
-$border: #e0e0e0;
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
 
 .register-body {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
+  @include flex-center;
+  background: linear-gradient(135deg, $navy 0%, $navy-soft 100%);
+  padding: $spacing-6;
 }
 
 .register-wrapper {
@@ -19,24 +14,23 @@ $border: #e0e0e0;
 }
 
 .register-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 2.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  @include card;
+  padding: $spacing-10;
+
+  @include sm-down { padding: $spacing-6; }
 
   .form-header {
-    margin-bottom: 2rem;
+    margin-bottom: $spacing-8;
     text-align: center;
 
     h2 {
       font-size: 1.75rem;
-      color: $text;
-      margin: 0 0 0.5rem;
+      color: $color-text;
+      margin-bottom: $spacing-2;
     }
 
     p {
-      color: $muted;
-      margin: 0;
+      color: $color-text-muted;
     }
   }
 }
@@ -44,17 +38,17 @@ $border: #e0e0e0;
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: $spacing-5;
 
   .input-group {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: $spacing-2;
 
     label {
       font-size: 0.9rem;
-      font-weight: 600;
-      color: $text;
+      font-weight: $font-weight-semibold;
+      color: $color-text;
     }
   }
 
@@ -65,22 +59,13 @@ $border: #e0e0e0;
 
     i {
       position: absolute;
-      left: 14px;
-      color: $muted;
+      left: $spacing-4;
+      color: $color-text-muted;
     }
 
     input {
-      width: 100%;
-      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-      border: 1px solid $border;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      transition: border-color 0.2s;
-
-      &:focus {
-        outline: none;
-        border-color: $primary;
-      }
+      @include input-base;
+      padding-left: $spacing-10;
     }
   }
 
@@ -90,44 +75,36 @@ $border: #e0e0e0;
   }
 
   .error-message {
-    background: #fee;
+    background: rgba($danger, 0.1);
     color: $danger;
-    padding: 0.75rem;
-    border-radius: 6px;
+    padding: $spacing-3;
+    border-radius: $radius-md;
     font-size: 0.9rem;
     text-align: center;
   }
 
   .btn-register {
+    @include button-base;
     background: $primary;
-    color: #fff;
-    border: none;
-    padding: 0.9rem;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: opacity 0.2s;
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    color: $white;
+    padding: $spacing-4;
 
     &:not(:disabled):hover {
-      opacity: 0.9;
+      background: $primary-dark;
     }
   }
 
   .form-footer {
     text-align: center;
     font-size: 0.9rem;
-    color: $muted;
+    color: $color-text-muted;
 
     a {
       color: $primary;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: $font-weight-semibold;
+
+      &:hover { text-decoration: underline; }
     }
   }
 }

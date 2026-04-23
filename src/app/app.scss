@@ -1,0 +1,3 @@
+// Sólo expone las variables del design system al componente raíz.
+// Los estilos de layout viven en cada componente hijo.
+@use '../styles/variables' as *;

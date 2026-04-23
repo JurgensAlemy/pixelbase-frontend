@@ -1,21 +1,26 @@
-/* Variables y Reset exclusivo para el Dashboard */
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+/* Custom properties locales del Dashboard derivadas del design system */
 .dashboard-wrapper {
-    --admin-bg: #f3f4f6;
-    --admin-white: #ffffff;
-    --admin-blue: #0d6efd;
-    --admin-text-dark: #1e293b;
-    --admin-text-light: #64748b;
-    --admin-border: #e2e8f0;
-    --admin-green: #10b981;
-    --admin-red: #ef4444;
-    --admin-purple: #8b5cf6;
-    --admin-yellow: #f59e0b;
+    --admin-bg:         #f3f4f6;
+    --admin-white:      #{$white};
+    --admin-blue:       #{$primary};
+    --admin-text-dark:  #{$gray-900};
+    --admin-text-light: #{$gray-500};
+    --admin-border:     #{$color-border};
+    --admin-green:      #{$success};
+    --admin-red:        #{$danger};
+    --admin-purple:     #8b5cf6;
+    --admin-yellow:     #{$warning};
 
     background-color: var(--admin-bg);
     color: var(--admin-text-dark);
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
+
+    @include md-down { flex-direction: column; }
 }
 
 /* --- SIDEBAR (Menú Lateral) --- */
