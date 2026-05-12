@@ -1,0 +1,436 @@
+<div class="dashboard-wrapper">
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <main class="main-content">
+    <app-admin-header
+      title="Ajustes"
+      subtitle="Configura los parámetros generales de la tienda."
+      searchPlaceholder="Buscar opciones..."
+    />
+
+    <div class="dashboard-container">
+
+      <div class="settings-layout">
+
+        <!-- Sub-navegación lateral -->
+        <aside class="settings-nav">
+          <h3 class="nav-title">Secciones</h3>
+          @for (section of sections; track section.id) {
+            <button
+              type="button"
+              class="nav-item"
+              [class.active]="isActive(section.id)"
+              (click)="setSection(section.id)"
+            >
+              <i class="fa-solid {{ section.icon }}"></i>
+              <span>{{ section.label }}</span>
+              @if (isActive(section.id)) {
+                <i class="fa-solid fa-chevron-right nav-arrow"></i>
+              }
+            </button>
+          }
+        </aside>
+
+        <!-- Panel de contenido -->
+        <section class="settings-content panel-card">
+
+          <header class="settings-header">
+            <div>
+              <h2 class="settings-title">
+                <i class="fa-solid {{ currentSectionDef().icon }}"></i>
+                {{ currentSectionDef().label }}
+              </h2>
+              <p class="settings-description">{{ currentSectionDef().description }}</p>
+            </div>
+          </header>
+
+          <!-- ============ GENERAL ============ -->
+          @if (isActive('general')) {
+            <form [formGroup]="generalForm" (ngSubmit)="save('general')" class="settings-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g-name">Nombre del administrador</label>
+                  <input id="g-name" type="text" formControlName="adminName" />
+                  @if (generalForm.controls.adminName.touched && generalForm.controls.adminName.invalid) {
+                    <span class="form-error">Mínimo 3 caracteres.</span>
+                  }
+                </div>
+                <div class="form-group">
+                  <label for="g-email">Email</label>
+                  <input id="g-email" type="email" formControlName="email" />
+                  @if (generalForm.controls.email.touched && generalForm.controls.email.invalid) {
+                    <span class="form-error">Email inválido.</span>
+                  }
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="g-lang">Idioma</label>
+                  <select id="g-lang" formControlName="language">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="pt">Português</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="g-tz">Zona horaria</label>
+                  <select id="g-tz" formControlName="timezone">
+                    <option value="America/Lima">Lima (GMT-5)</option>
+                    <option value="America/Bogota">Bogotá (GMT-5)</option>
+                    <option value="America/Mexico_City">Ciudad de México (GMT-6)</option>
+                    <option value="America/Argentina/Buenos_Aires">Buenos Aires (GMT-3)</option>
+                  </select>
+                </div>
+              </div>
+
+              <footer class="form-footer">
+                <button type="button" class="btn-ghost" (click)="reset('general')">
+                  <i class="fa-solid fa-rotate-left"></i> Restablecer
+                </button>
+                <button type="submit" class="btn-primary">
+                  <i class="fa-solid fa-check"></i> Guardar cambios
+                </button>
+              </footer>
+            </form>
+          }
+
+          <!-- ============ TIENDA ============ -->
+          @if (isActive('store')) {
+            <form [formGroup]="storeForm" (ngSubmit)="save('store')" class="settings-form">
+              <div class="form-group">
+                <label for="s-name">Nombre de la tienda</label>
+                <input id="s-name" type="text" formControlName="storeName" />
+                @if (storeForm.controls.storeName.touched && storeForm.controls.storeName.invalid) {
+                  <span class="form-error">Mínimo 3 caracteres.</span>
+                }
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="s-email">Email de contacto</label>
+                  <input id="s-email" type="email" formControlName="storeEmail" />
+                  @if (storeForm.controls.storeEmail.touched && storeForm.controls.storeEmail.invalid) {
+                    <span class="form-error">Email inválido.</span>
+                  }
+                </div>
+                <div class="form-group">
+                  <label for="s-phone">Teléfono</label>
+                  <input id="s-phone" type="tel" formControlName="storePhone" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="s-address">Dirección física</label>
+                <input id="s-address" type="text" formControlName="storeAddress" />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="s-currency">Moneda</label>
+                  <select id="s-currency" formControlName="currency">
+                    <option value="PEN">Sol peruano (S/)</option>
+                    <option value="USD">Dólar estadounidense (US$)</option>
+                    <option value="EUR">Euro (€)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="s-logo">URL del logo</label>
+                  <input id="s-logo" type="text" formControlName="logoUrl" />
+                </div>
+              </div>
+
+              <footer class="form-footer">
+                <button type="button" class="btn-ghost" (click)="reset('store')">
+                  <i class="fa-solid fa-rotate-left"></i> Restablecer
+                </button>
+                <button type="submit" class="btn-primary">
+                  <i class="fa-solid fa-check"></i> Guardar cambios
+                </button>
+              </footer>
+            </form>
+          }
+
+          <!-- ============ PAGOS ============ -->
+          @if (isActive('payments')) {
+            <form [formGroup]="paymentsForm" (ngSubmit)="save('payments')" class="settings-form">
+              <h4 class="form-subheading">Métodos de pago aceptados</h4>
+
+              <div class="toggle-list">
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-brands fa-cc-visa method-icon visa"></i>
+                    <div>
+                      <strong>Tarjeta Visa</strong>
+                      <small>Acepta pagos con tarjetas Visa de crédito y débito.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="visa" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-brands fa-cc-mastercard method-icon mastercard"></i>
+                    <div>
+                      <strong>Tarjeta Mastercard</strong>
+                      <small>Acepta pagos con tarjetas Mastercard.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="mastercard" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-mobile-screen method-icon yape"></i>
+                    <div>
+                      <strong>Yape</strong>
+                      <small>Pagos rápidos por billetera digital del BCP.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="yape" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-mobile-screen method-icon plin"></i>
+                    <div>
+                      <strong>Plin</strong>
+                      <small>Billetera digital de Interbank, Scotiabank y BBVA.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="plin" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-money-bill-wave method-icon cash"></i>
+                    <div>
+                      <strong>PagoEfectivo</strong>
+                      <small>Pago en agentes o bodegas con código CIP.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="pagoEfectivo" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-building-columns method-icon bank"></i>
+                    <div>
+                      <strong>Transferencia bancaria</strong>
+                      <small>BCP, BBVA, Interbank, Scotiabank (procesamiento manual).</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="transferBank" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+              </div>
+
+              <h4 class="form-subheading">Configuración fiscal</h4>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="p-igv">IGV (%)</label>
+                  <input id="p-igv" type="number" formControlName="igvPercent" min="0" max="100" step="0.5" />
+                  @if (paymentsForm.controls.igvPercent.touched && paymentsForm.controls.igvPercent.invalid) {
+                    <span class="form-error">Debe estar entre 0 y 100.</span>
+                  }
+                </div>
+              </div>
+
+              <footer class="form-footer">
+                <button type="button" class="btn-ghost" (click)="reset('payments')">
+                  <i class="fa-solid fa-rotate-left"></i> Restablecer
+                </button>
+                <button type="submit" class="btn-primary">
+                  <i class="fa-solid fa-check"></i> Guardar cambios
+                </button>
+              </footer>
+            </form>
+          }
+
+          <!-- ============ ENVÍOS ============ -->
+          @if (isActive('shipping')) {
+            <form [formGroup]="shippingForm" (ngSubmit)="save('shipping')" class="settings-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="sh-base">Costo de envío base (S/)</label>
+                  <input id="sh-base" type="number" formControlName="baseCost" min="0" step="0.5" />
+                  @if (shippingForm.controls.baseCost.touched && shippingForm.controls.baseCost.invalid) {
+                    <span class="form-error">Valor inválido.</span>
+                  }
+                </div>
+                <div class="form-group">
+                  <label for="sh-free">Envío gratis desde (S/)</label>
+                  <input id="sh-free" type="number" formControlName="freeFrom" min="0" step="10" />
+                  @if (shippingForm.controls.freeFrom.touched && shippingForm.controls.freeFrom.invalid) {
+                    <span class="form-error">Valor inválido.</span>
+                  }
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="sh-days">Días estimados de entrega</label>
+                  <input id="sh-days" type="number" formControlName="estimatedDays" min="1" max="30" />
+                </div>
+                <div class="form-group">
+                  <label for="sh-coverage">Cobertura</label>
+                  <input id="sh-coverage" type="text" formControlName="coverage" />
+                </div>
+              </div>
+
+              <label class="toggle-row toggle-row--solo">
+                <div class="toggle-info">
+                  <i class="fa-solid fa-store method-icon"></i>
+                  <div>
+                    <strong>Recojo en tienda</strong>
+                    <small>Permite al cliente recoger su pedido en la dirección física.</small>
+                  </div>
+                </div>
+                <span class="switch">
+                  <input type="checkbox" formControlName="pickupAvailable" />
+                  <span class="slider"></span>
+                </span>
+              </label>
+
+              <footer class="form-footer">
+                <button type="button" class="btn-ghost" (click)="reset('shipping')">
+                  <i class="fa-solid fa-rotate-left"></i> Restablecer
+                </button>
+                <button type="submit" class="btn-primary">
+                  <i class="fa-solid fa-check"></i> Guardar cambios
+                </button>
+              </footer>
+            </form>
+          }
+
+          <!-- ============ NOTIFICACIONES ============ -->
+          @if (isActive('notifications')) {
+            <form [formGroup]="notificationsForm" (ngSubmit)="save('notifications')" class="settings-form">
+              <h4 class="form-subheading">Notificaciones por email</h4>
+
+              <div class="toggle-list">
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-cart-shopping method-icon"></i>
+                    <div>
+                      <strong>Nuevo pedido</strong>
+                      <small>Recibe un email cuando entre un pedido nuevo.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="emailNewOrder" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-triangle-exclamation method-icon warn"></i>
+                    <div>
+                      <strong>Bajo stock</strong>
+                      <small>Aviso cuando un producto baja del umbral configurado.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="emailLowStock" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-chart-line method-icon"></i>
+                    <div>
+                      <strong>Resumen diario</strong>
+                      <small>Email cada mañana con las ventas del día anterior.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="emailDailySummary" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+              </div>
+
+              <h4 class="form-subheading">Otras notificaciones</h4>
+
+              <div class="toggle-list">
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-bell method-icon"></i>
+                    <div>
+                      <strong>Push del navegador</strong>
+                      <small>Notificaciones en tiempo real dentro del panel.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="pushNotifications" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row">
+                  <div class="toggle-info">
+                    <i class="fa-solid fa-mobile-screen method-icon"></i>
+                    <div>
+                      <strong>SMS urgentes</strong>
+                      <small>Solo para incidentes críticos del sistema.</small>
+                    </div>
+                  </div>
+                  <span class="switch">
+                    <input type="checkbox" formControlName="smsImportantUpdates" />
+                    <span class="slider"></span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="n-threshold">Umbral de bajo stock (unidades)</label>
+                  <input id="n-threshold" type="number" formControlName="lowStockThreshold" min="1" />
+                </div>
+              </div>
+
+              <footer class="form-footer">
+                <button type="button" class="btn-ghost" (click)="reset('notifications')">
+                  <i class="fa-solid fa-rotate-left"></i> Restablecer
+                </button>
+                <button type="submit" class="btn-primary">
+                  <i class="fa-solid fa-check"></i> Guardar cambios
+                </button>
+              </footer>
+            </form>
+          }
+
+        </section>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Toast de confirmación (aparece tras guardar) -->
+@if (toastMessage(); as msg) {
+  <div class="save-toast" role="status" aria-live="polite">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ msg }}</span>
+  </div>
+}

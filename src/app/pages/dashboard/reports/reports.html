@@ -1,0 +1,191 @@
+<div class="dashboard-wrapper">
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <main class="main-content">
+    <app-admin-header
+      title="Reportes"
+      subtitle="Visualiza el rendimiento de tu negocio."
+      searchPlaceholder="Buscar en reportes..."
+    />
+
+    <div class="dashboard-container">
+
+      <!-- Barra superior: selector de periodo + exportar -->
+      <div class="reports-toolbar">
+        <div class="period-selector" role="tablist" aria-label="Seleccionar periodo">
+          @for (opt of periodOptions; track opt.value) {
+            <button
+              type="button"
+              class="period-btn"
+              [class.active]="selectedPeriod() === opt.value"
+              [attr.aria-selected]="selectedPeriod() === opt.value"
+              role="tab"
+              (click)="setPeriod(opt.value)"
+            >
+              {{ opt.label }}
+            </button>
+          }
+        </div>
+
+        <button type="button" class="btn-primary">
+          <i class="fa-solid fa-file-export"></i> Exportar reporte
+        </button>
+      </div>
+
+      <!-- KPIs con comparativa -->
+      <div class="stats-grid">
+        @for (kpi of kpis; track kpi.label) {
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-desc">{{ kpi.label }}</span>
+              <div class="stat-icon" [class]="kpi.iconClass">
+                <i class="fa-solid {{ kpi.icon }}"></i>
+              </div>
+            </div>
+            <div class="stat-value">{{ kpi.value }}</div>
+            @if (kpi.delta >= 0) {
+              <div class="trend up">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                +{{ kpi.delta }}% vs periodo anterior
+              </div>
+            } @else {
+              <div class="trend down">
+                <i class="fa-solid fa-arrow-trend-down"></i>
+                {{ kpi.delta }}% vs periodo anterior
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Gráfico de ventas -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-titles">
+            <h3 class="panel-title">Resumen de ventas</h3>
+            <p class="panel-subtitle">
+              Total: <strong>S/ {{ totalSales | number:'1.0-0' }}</strong>
+              · Promedio diario: <strong>S/ {{ avgSales | number:'1.0-0' }}</strong>
+            </p>
+          </div>
+          <span class="legend-chip">
+            <span class="legend-dot"></span> Ingresos
+          </span>
+        </div>
+
+        <div class="sales-chart">
+          <!-- Líneas guía -->
+          <div class="chart-grid">
+            <div class="grid-line"><span>S/ {{ maxSales | number:'1.0-0' }}</span></div>
+            <div class="grid-line"><span>S/ {{ (maxSales / 2) | number:'1.0-0' }}</span></div>
+            <div class="grid-line"><span>S/ 0</span></div>
+          </div>
+
+          <!-- Barras -->
+          <div class="chart-bars">
+            @for (point of salesData; track point.label) {
+              <div class="chart-col">
+                <div class="chart-bar-track">
+                  <div class="chart-bar" [style.height.%]="barHeight(point)">
+                    <span class="chart-tooltip">
+                      <strong>S/ {{ point.value | number:'1.0-0' }}</strong>
+                      <small>{{ point.label }}</small>
+                    </span>
+                  </div>
+                </div>
+                <span class="chart-label">{{ point.label }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Top productos + Top clientes (2 columnas) -->
+      <div class="rankings-grid">
+
+        <!-- Top productos -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-titles">
+              <h3 class="panel-title">Top productos</h3>
+              <p class="panel-subtitle">Más vendidos en el periodo</p>
+            </div>
+            <span class="ranking-badge">
+              <i class="fa-solid fa-trophy"></i> {{ topProducts.length }}
+            </span>
+          </div>
+
+          <div class="ranking-list">
+            @for (product of topProducts; track product.rank) {
+              <div class="ranking-item">
+                <span class="ranking-position rank-{{ product.rank }}">
+                  {{ product.rank }}
+                </span>
+                <div class="ranking-image">
+                  <img [src]="product.image" [alt]="product.name" />
+                </div>
+                <div class="ranking-info">
+                  <div class="ranking-line">
+                    <strong class="ranking-name">{{ product.name }}</strong>
+                    <span class="ranking-value">S/ {{ product.revenue | number:'1.0-0' }}</span>
+                  </div>
+                  <div class="ranking-bar-row">
+                    <div class="ranking-bar-track">
+                      <div class="ranking-bar" [style.width.%]="productBar(product)"></div>
+                    </div>
+                    <span class="ranking-units">{{ product.unitsSold }} ventas</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Top clientes -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-titles">
+              <h3 class="panel-title">Top clientes</h3>
+              <p class="panel-subtitle">Mayores compradores del periodo</p>
+            </div>
+            <span class="ranking-badge ranking-badge--gold">
+              <i class="fa-solid fa-crown"></i> {{ topCustomers.length }}
+            </span>
+          </div>
+
+          <div class="ranking-list">
+            @for (customer of topCustomers; track customer.rank) {
+              <div class="ranking-item">
+                <span class="ranking-position rank-{{ customer.rank }}">
+                  {{ customer.rank }}
+                </span>
+                <div class="ranking-avatar">
+                  <img [src]="customer.avatar" [alt]="customer.name" />
+                </div>
+                <div class="ranking-info">
+                  <div class="ranking-line">
+                    <strong class="ranking-name">{{ customer.name }}</strong>
+                    <span class="ranking-value text-green">
+                      S/ {{ customer.totalSpent | number:'1.0-0' }}
+                    </span>
+                  </div>
+                  <div class="ranking-bar-row">
+                    <div class="ranking-bar-track">
+                      <div
+                        class="ranking-bar ranking-bar--customer"
+                        [style.width.%]="customerBar(customer)"
+                      ></div>
+                    </div>
+                    <span class="ranking-units">{{ customer.orders }} pedidos</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>

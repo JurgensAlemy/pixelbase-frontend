@@ -1,0 +1,433 @@
+<div class="dashboard-wrapper">
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <main class="main-content">
+    <app-admin-header
+      title="Roles y Permisos"
+      subtitle="Define qué puede hacer cada usuario dentro del sistema."
+      searchPlaceholder="Buscar roles..."
+    />
+
+    <div class="dashboard-container">
+
+      <!-- KPIs -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">ROLES DEFINIDOS</span>
+            <div class="stat-icon bg-blue-light"><i class="fa-solid fa-user-shield"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().totalRoles }}</div>
+          <div class="trend up"><i class="fa-solid fa-check"></i> Configurados</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">USUARIOS ASIGNADOS</span>
+            <div class="stat-icon bg-purple-light"><i class="fa-solid fa-users"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().totalUsers }}</div>
+          <div class="trend up"><i class="fa-solid fa-user"></i> Total del staff</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">PERMISOS DISPONIBLES</span>
+            <div class="stat-icon bg-green-light"><i class="fa-solid fa-key"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().totalPermissions }}</div>
+          <div class="trend up"><i class="fa-solid fa-lock"></i> Granulares</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">ROL MÁS USADO</span>
+            <div class="stat-icon bg-yellow-light"><i class="fa-solid fa-crown"></i></div>
+          </div>
+          <div class="stat-value role-most-used">{{ stats().mostUsedName }}</div>
+          <div class="trend up"><i class="fa-solid fa-star"></i> Top asignación</div>
+        </div>
+      </div>
+
+      <!-- Listado -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <h3 class="panel-title">Roles del sistema</h3>
+          <button type="button" class="btn-primary" (click)="openCreate()">
+            <i class="fa-solid fa-plus"></i> Nuevo rol
+          </button>
+        </div>
+
+        <div class="roles-toolbar">
+          <div class="search-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              placeholder="Buscar por nombre o descripción..."
+              [value]="searchQuery()"
+              (input)="onSearch($event)"
+            />
+          </div>
+          <span class="result-count">
+            {{ filteredRoles().length }} de {{ roles().length }} roles
+          </span>
+        </div>
+
+        @if (filteredRoles().length === 0) {
+          <div class="empty-state">
+            <i class="fa-solid fa-user-shield"></i>
+            <h4>Sin roles</h4>
+            <p>No encontramos roles que coincidan con tu búsqueda.</p>
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Rol</th>
+                  <th>Descripción</th>
+                  <th class="text-center">Usuarios</th>
+                  <th>Permisos</th>
+                  <th class="text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (role of filteredRoles(); track role.id) {
+                  <tr>
+                    <td>
+                      <div class="role-name-cell">
+                        <span class="role-color-dot color-{{ role.color }}"></span>
+                        <div class="role-name-info">
+                          <strong>{{ role.name }}</strong>
+                          @if (role.isSystem) {
+                            <small class="system-badge">
+                              <i class="fa-solid fa-lock"></i> Sistema
+                            </small>
+                          }
+                        </div>
+                      </div>
+                    </td>
+                    <td class="role-description">{{ role.description }}</td>
+                    <td class="text-center">
+                      <strong>{{ role.usersCount }}</strong>
+                    </td>
+                    <td>
+                      <div class="permission-progress">
+                        <span class="permission-ratio">{{ permissionRatio(role) }}</span>
+                        <div class="progress-track">
+                          <div
+                            class="progress-fill color-{{ role.color }}"
+                            [style.width.%]="permissionPercent(role)"
+                          ></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row-actions">
+                        <button
+                          type="button"
+                          class="btn-action btn-action--detail"
+                          title="Ver detalle"
+                          (click)="openDetail(role)"
+                        >
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action btn-action--edit"
+                          title="Editar permisos"
+                          (click)="openEdit(role)"
+                        >
+                          <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn-action btn-action--delete"
+                          title="Eliminar"
+                          [disabled]="role.isSystem"
+                          (click)="requestDelete(role)"
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================
+     Modal: Detalle del rol (read-only)
+     ============================================================ -->
+@if (modalMode() === 'detail' && selectedRole(); as role) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div
+      class="modal-dialog modal-dialog--lg"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-header">
+        <h2 class="modal-title">
+          <span class="role-color-dot color-{{ role.color }}"></span>
+          {{ role.name }}
+          @if (role.isSystem) {
+            <span class="system-badge"><i class="fa-solid fa-lock"></i> Sistema</span>
+          }
+        </h2>
+        <button type="button" class="modal-close" (click)="closeModal()" aria-label="Cerrar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <div class="modal-body role-detail">
+
+        <section class="detail-section">
+          <h3 class="detail-heading"><i class="fa-solid fa-info-circle"></i> Descripción</h3>
+          <p class="role-description-large">{{ role.description }}</p>
+        </section>
+
+        <section class="detail-section role-meta-row">
+          <div class="meta-stat">
+            <span class="meta-stat-label">Usuarios asignados</span>
+            <strong class="meta-stat-value">{{ role.usersCount }}</strong>
+          </div>
+          <div class="meta-stat">
+            <span class="meta-stat-label">Permisos</span>
+            <strong class="meta-stat-value">{{ permissionRatio(role) }}</strong>
+          </div>
+          <div class="meta-stat">
+            <span class="meta-stat-label">Cobertura</span>
+            <strong class="meta-stat-value">{{ permissionPercent(role) }}%</strong>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h3 class="detail-heading">
+            <i class="fa-solid fa-key"></i> Permisos otorgados
+          </h3>
+          <div class="permissions-matrix">
+            <table class="matrix-table">
+              <thead>
+                <tr>
+                  <th>Módulo</th>
+                  @for (action of actions; track action.id) {
+                    <th class="text-center">{{ action.label }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (module of modules; track module.id) {
+                  <tr>
+                    <td><strong>{{ module.label }}</strong></td>
+                    @for (action of actions; track action.id) {
+                      <td class="text-center">
+                        @if (hasPermission(role, module.id + '.' + action.id)) {
+                          <i class="fa-solid fa-circle-check matrix-check"></i>
+                        } @else {
+                          <i class="fa-solid fa-minus matrix-empty"></i>
+                        }
+                      </td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-ghost" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn-primary" (click)="editFromDetail()">
+          <i class="fa-solid fa-pen"></i> Editar rol
+        </button>
+      </footer>
+    </div>
+  </div>
+}
+
+<!-- ============================================================
+     Modal: Crear / Editar rol (con matriz interactiva)
+     ============================================================ -->
+@if (modalMode() === 'create' || modalMode() === 'edit') {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div
+      class="modal-dialog modal-dialog--lg"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-header">
+        <h2 class="modal-title">
+          @if (modalMode() === 'create') {
+            <i class="fa-solid fa-plus"></i> Nuevo rol
+          } @else {
+            <i class="fa-solid fa-pen"></i> Editar rol
+          }
+        </h2>
+        <button type="button" class="modal-close" (click)="closeModal()" aria-label="Cerrar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="modal-body role-form">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rf-name">Nombre del rol</label>
+            <input
+              id="rf-name"
+              type="text"
+              formControlName="name"
+              placeholder="Editor"
+              autocomplete="off"
+            />
+            @if (form.controls.name.touched && form.controls.name.invalid) {
+              <span class="form-error">Mínimo 3 caracteres.</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="rf-color">Color de identificación</label>
+            <select id="rf-color" formControlName="color">
+              @for (opt of colorOptions; track opt.value) {
+                <option [value]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rf-desc">Descripción</label>
+          <textarea
+            id="rf-desc"
+            formControlName="description"
+            rows="2"
+            placeholder="Describe brevemente qué puede hacer este rol..."
+          ></textarea>
+          @if (form.controls.description.touched && form.controls.description.invalid) {
+            <span class="form-error">Mínimo 10 caracteres.</span>
+          }
+        </div>
+
+        <!-- Matriz de permisos -->
+        <div class="form-group">
+          <div class="matrix-header">
+            <label class="matrix-label">
+              Permisos
+              <span class="selected-count">
+                {{ selectedCount() }} / {{ totalPermissions }} seleccionados
+              </span>
+            </label>
+            <div class="matrix-quick-actions">
+              <button type="button" class="quick-action-btn" (click)="checkAllPermissions()">
+                <i class="fa-solid fa-check-double"></i> Todos
+              </button>
+              <button type="button" class="quick-action-btn" (click)="clearAllPermissions()">
+                <i class="fa-solid fa-xmark"></i> Ninguno
+              </button>
+            </div>
+          </div>
+
+          <div class="permissions-matrix">
+            <table class="matrix-table matrix-table--editable">
+              <thead>
+                <tr>
+                  <th>Módulo</th>
+                  @for (action of actions; track action.id) {
+                    <th class="text-center">{{ action.label }}</th>
+                  }
+                  <th class="text-center">Todos</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (module of modules; track module.id) {
+                  <tr>
+                    <td><strong>{{ module.label }}</strong></td>
+                    @for (action of actions; track action.id) {
+                      <td class="text-center">
+                        <input
+                          type="checkbox"
+                          class="matrix-checkbox"
+                          [checked]="isChecked(module.id, action.id)"
+                          (change)="togglePermission(module.id, action.id)"
+                          [attr.aria-label]="action.label + ' ' + module.label"
+                        />
+                      </td>
+                    }
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="matrix-checkbox matrix-checkbox--all"
+                        [checked]="isModuleAllChecked(module.id)"
+                        [attr.data-indeterminate]="isModuleSomeChecked(module.id) ? 'true' : null"
+                        (change)="toggleModuleAll(module.id, $event)"
+                        [attr.aria-label]="'Todos los permisos de ' + module.label"
+                      />
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <footer class="modal-footer">
+          <button type="button" class="btn-ghost" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-check"></i>
+            {{ modalMode() === 'create' ? 'Crear rol' : 'Guardar cambios' }}
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ============================================================
+     Modal: Confirmación de eliminación
+     ============================================================ -->
+@if (modalMode() === 'delete-confirm' && selectedRole(); as role) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div
+      class="modal-dialog modal-dialog--sm"
+      role="alertdialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="confirm-body">
+        <div class="confirm-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h2>¿Eliminar rol?</h2>
+        <p>
+          Estás a punto de eliminar el rol
+          <strong>{{ role.name }}</strong>.
+          @if (role.usersCount > 0) {
+            <br><br>
+            <span class="text-warning">
+              ⚠ {{ role.usersCount }} usuario(s) tienen este rol asignado y quedarán sin permisos.
+            </span>
+          }
+        </p>
+      </div>
+      <footer class="modal-footer">
+        <button type="button" class="btn-ghost" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="btn-danger" (click)="confirmDelete()">
+          <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      </footer>
+    </div>
+  </div>
+}

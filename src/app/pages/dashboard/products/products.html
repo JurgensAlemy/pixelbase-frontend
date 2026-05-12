@@ -1,0 +1,313 @@
+<div class="dashboard-wrapper">
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <main class="main-content">
+    <app-admin-header
+      title="Productos"
+      subtitle="Gestiona el catálogo de la tienda."
+      searchPlaceholder="Buscar productos..."
+    />
+
+    <div class="dashboard-container">
+
+      <!-- KPIs superiores -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">TOTAL PRODUCTOS</span>
+            <div class="stat-icon bg-blue-light"><i class="fa-solid fa-box-open"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().total }}</div>
+          <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> Catálogo activo</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">EN STOCK</span>
+            <div class="stat-icon bg-green-light"><i class="fa-solid fa-circle-check"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().inStock }}</div>
+          <div class="trend up"><i class="fa-solid fa-check"></i> Disponibles</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">BAJO STOCK</span>
+            <div class="stat-icon bg-yellow-light"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().lowStock }}</div>
+          <div class="trend down"><i class="fa-solid fa-arrow-trend-down"></i> Necesitan reposición</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">AGOTADOS</span>
+            <div class="stat-icon bg-red-light"><i class="fa-solid fa-ban"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().outOfStock }}</div>
+          <div class="trend down"><i class="fa-solid fa-xmark"></i> Sin disponibilidad</div>
+        </div>
+      </div>
+
+      <!-- Listado de productos -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <h3 class="panel-title">Catálogo</h3>
+          <button type="button" class="btn-primary" (click)="openCreate()">
+            <i class="fa-solid fa-plus"></i> Crear producto
+          </button>
+        </div>
+
+        <div class="products-toolbar">
+          <div class="search-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              placeholder="Buscar por nombre, marca o categoría..."
+              [value]="searchQuery()"
+              (input)="onSearch($event)"
+            />
+          </div>
+
+          <div class="filter-field">
+            <label for="categoryFilter">Categoría:</label>
+            <select
+              id="categoryFilter"
+              [value]="selectedCategory()"
+              (change)="onCategoryChange($event)"
+            >
+              @for (cat of categories(); track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+          </div>
+
+          <span class="result-count">
+            {{ filteredProducts().length }} de {{ products().length }} productos
+          </span>
+        </div>
+
+        @if (filteredProducts().length === 0) {
+          <div class="empty-state">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h4>Sin resultados</h4>
+            <p>No encontramos productos que coincidan con tu búsqueda.</p>
+          </div>
+        } @else {
+          <div class="products-grid-admin">
+            @for (product of filteredProducts(); track product.id) {
+              <article class="product-card-admin">
+                <div class="card-image">
+                  <img [src]="product.image" [alt]="product.name" />
+                  <span class="stock-badge stock-{{ stockLevel(product.stock) }}">
+                    {{ stockLabel(product.stock) }}
+                  </span>
+
+                  <div class="card-actions">
+                    <button
+                      type="button"
+                      class="action-btn action-edit"
+                      title="Editar"
+                      (click)="openEdit(product)"
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="action-btn action-delete"
+                      title="Eliminar"
+                      (click)="requestDelete(product)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <span class="card-brand">{{ product.brand }}</span>
+                  <h3 class="card-name">{{ product.name }}</h3>
+                  <span class="card-category">{{ product.category }}</span>
+
+                  <div class="card-footer">
+                    <div class="card-price">S/ {{ product.price | number:'1.0-0' }}</div>
+                    <div class="card-stock">
+                      <i class="fa-solid fa-boxes-stacked"></i>
+                      {{ product.stock }} unid.
+                    </div>
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================
+     Modal: Crear / Editar producto
+     ============================================================ -->
+@if (modalMode() === 'create' || modalMode() === 'edit') {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div
+      class="modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-header">
+        <h2 class="modal-title">
+          @if (modalMode() === 'create') {
+            <i class="fa-solid fa-plus"></i> Nuevo producto
+          } @else {
+            <i class="fa-solid fa-pen"></i> Editar producto
+          }
+        </h2>
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeModal()"
+          aria-label="Cerrar"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="modal-body product-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pf-name">Nombre</label>
+            <input
+              id="pf-name"
+              type="text"
+              formControlName="name"
+              placeholder="GeForce RTX 4090 24GB"
+              autocomplete="off"
+            />
+            @if (form.controls.name.touched && form.controls.name.invalid) {
+              <span class="form-error">Mínimo 3 caracteres.</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="pf-brand">Marca</label>
+            <input
+              id="pf-brand"
+              type="text"
+              formControlName="brand"
+              placeholder="NVIDIA"
+              autocomplete="off"
+            />
+            @if (form.controls.brand.touched && form.controls.brand.invalid) {
+              <span class="form-error">La marca es requerida.</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pf-category">Categoría</label>
+          <input
+            id="pf-category"
+            type="text"
+            formControlName="category"
+            placeholder="GPUs"
+            list="category-options"
+            autocomplete="off"
+          />
+          <datalist id="category-options">
+            @for (c of categories(); track c) {
+              @if (c !== 'Todas') {
+                <option [value]="c"></option>
+              }
+            }
+          </datalist>
+          @if (form.controls.category.touched && form.controls.category.invalid) {
+            <span class="form-error">La categoría es requerida.</span>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pf-price">Precio (S/)</label>
+            <input id="pf-price" type="number" formControlName="price" min="0" step="1" />
+            @if (form.controls.price.touched && form.controls.price.invalid) {
+              <span class="form-error">Debe ser mayor o igual a 0.</span>
+            }
+          </div>
+          <div class="form-group">
+            <label for="pf-stock">Stock</label>
+            <input id="pf-stock" type="number" formControlName="stock" min="0" step="1" />
+            @if (form.controls.stock.touched && form.controls.stock.invalid) {
+              <span class="form-error">Debe ser mayor o igual a 0.</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pf-image">URL de imagen</label>
+          <div class="image-input-row">
+            <input
+              id="pf-image"
+              type="text"
+              formControlName="image"
+              placeholder="/img/generated-..."
+            />
+            <div class="image-preview">
+              @if (form.controls.image.value) {
+                <img [src]="form.controls.image.value" alt="Vista previa" />
+              } @else {
+                <i class="fa-regular fa-image"></i>
+              }
+            </div>
+          </div>
+        </div>
+
+        <footer class="modal-footer">
+          <button type="button" class="btn-ghost" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-check"></i>
+            {{ modalMode() === 'create' ? 'Crear producto' : 'Guardar cambios' }}
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ============================================================
+     Modal: Confirmación de eliminación
+     ============================================================ -->
+@if (modalMode() === 'delete-confirm') {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div
+      class="modal-dialog modal-dialog--sm"
+      role="alertdialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="confirm-body">
+        <div class="confirm-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h2>¿Eliminar producto?</h2>
+        <p>
+          Estás a punto de eliminar
+          <strong>{{ selectedProduct()?.name }}</strong>.
+          Esta acción no se puede deshacer.
+        </p>
+      </div>
+      <footer class="modal-footer">
+        <button type="button" class="btn-ghost" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-danger" (click)="confirmDelete()">
+          <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      </footer>
+    </div>
+  </div>
+}

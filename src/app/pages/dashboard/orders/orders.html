@@ -1,0 +1,251 @@
+<div class="dashboard-wrapper">
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <main class="main-content">
+    <app-admin-header
+      title="Pedidos"
+      subtitle="Administra los pedidos de tus clientes."
+      searchPlaceholder="Buscar pedidos..."
+    />
+
+    <div class="dashboard-container">
+
+      <!-- KPIs superiores -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">TOTAL PEDIDOS</span>
+            <div class="stat-icon bg-blue-light"><i class="fa-solid fa-cart-shopping"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().total }}</div>
+          <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> Histórico</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">PENDIENTES</span>
+            <div class="stat-icon bg-yellow-light"><i class="fa-solid fa-clock"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().pending }}</div>
+          <div class="trend down"><i class="fa-solid fa-hourglass-half"></i> Por procesar</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">COMPLETADOS</span>
+            <div class="stat-icon bg-green-light"><i class="fa-solid fa-circle-check"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().completed }}</div>
+          <div class="trend up"><i class="fa-solid fa-check"></i> Entregados</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-desc">CANCELADOS</span>
+            <div class="stat-icon bg-red-light"><i class="fa-solid fa-ban"></i></div>
+          </div>
+          <div class="stat-value">{{ stats().cancelled }}</div>
+          <div class="trend down"><i class="fa-solid fa-xmark"></i> Devueltos</div>
+        </div>
+      </div>
+
+      <!-- Listado de pedidos -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <h3 class="panel-title">Pedidos recientes</h3>
+        </div>
+
+        <div class="orders-toolbar">
+          <div class="search-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              placeholder="Buscar por Nº pedido, cliente o email..."
+              [value]="searchQuery()"
+              (input)="onSearch($event)"
+            />
+          </div>
+
+          <div class="filter-field">
+            <label for="statusFilter">Estado:</label>
+            <select
+              id="statusFilter"
+              [value]="selectedStatus()"
+              (change)="onStatusChange($event)"
+            >
+              @for (opt of statusOptions; track opt.value) {
+                <option [value]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </div>
+
+          <span class="result-count">
+            {{ filteredOrders().length }} de {{ orders().length }} pedidos
+          </span>
+        </div>
+
+        @if (filteredOrders().length === 0) {
+          <div class="empty-state">
+            <i class="fa-solid fa-receipt"></i>
+            <h4>Sin pedidos</h4>
+            <p>No encontramos pedidos que coincidan con tu búsqueda.</p>
+          </div>
+        } @else {
+          <div class="orders-grid">
+            @for (order of filteredOrders(); track order.id) {
+              <article class="order-card" (click)="openDetail(order)" tabindex="0">
+                <header class="order-card-header">
+                  <span class="order-number">{{ order.orderNumber }}</span>
+                  <span class="status-pill status-{{ order.status }}">
+                    <i class="fa-solid {{ statusIcon(order.status) }}"></i>
+                    {{ statusLabel(order.status) }}
+                  </span>
+                </header>
+
+                <div class="order-customer">
+                  <img [src]="order.customer.avatar" [alt]="order.customer.name" />
+                  <div class="customer-info">
+                    <strong>{{ order.customer.name }}</strong>
+                    <small>{{ order.customer.email }}</small>
+                  </div>
+                </div>
+
+                <div class="order-meta">
+                  <span><i class="fa-regular fa-calendar"></i> {{ order.date }}</span>
+                  <span><i class="fa-solid fa-box"></i> {{ itemsCount(order) }} producto{{ itemsCount(order) === 1 ? '' : 's' }}</span>
+                </div>
+
+                <footer class="order-card-footer">
+                  <div class="order-total">
+                    <span class="total-label">Total</span>
+                    <span class="total-value">S/ {{ orderTotal(order).total | number:'1.2-2' }}</span>
+                  </div>
+                  <span class="detail-link">
+                    Ver detalle <i class="fa-solid fa-arrow-right"></i>
+                  </span>
+                </footer>
+              </article>
+            }
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================
+     Modal: Detalle del pedido
+     ============================================================ -->
+@if (modalMode() === 'detail' && selectedOrder(); as order) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div
+      class="modal-dialog modal-dialog--lg"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-header">
+        <h2 class="modal-title">
+          <i class="fa-solid fa-receipt"></i>
+          Pedido {{ order.orderNumber }}
+          <span class="status-pill status-{{ order.status }}">
+            <i class="fa-solid {{ statusIcon(order.status) }}"></i>
+            {{ statusLabel(order.status) }}
+          </span>
+        </h2>
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeModal()"
+          aria-label="Cerrar"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <div class="modal-body order-detail">
+
+        <!-- Cliente -->
+        <section class="detail-section">
+          <h3 class="detail-heading">
+            <i class="fa-solid fa-user"></i> Cliente
+          </h3>
+          <div class="customer-block">
+            <img [src]="order.customer.avatar" [alt]="order.customer.name" />
+            <div>
+              <strong>{{ order.customer.name }}</strong>
+              <p><i class="fa-regular fa-envelope"></i> {{ order.customer.email }}</p>
+              <p><i class="fa-solid fa-location-dot"></i> {{ order.customer.address }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Items -->
+        <section class="detail-section">
+          <h3 class="detail-heading">
+            <i class="fa-solid fa-box"></i>
+            Productos ({{ order.items.length }})
+          </h3>
+          <div class="items-list">
+            @for (item of order.items; track $index) {
+              <div class="item-row">
+                <div class="item-image">
+                  <img [src]="item.image" [alt]="item.productName" />
+                </div>
+                <div class="item-info">
+                  <span class="item-brand">{{ item.brand }}</span>
+                  <h4 class="item-name">{{ item.productName }}</h4>
+                  <span class="item-qty">Cantidad: {{ item.quantity }}</span>
+                </div>
+                <div class="item-pricing">
+                  <span class="item-unit">S/ {{ item.unitPrice | number:'1.2-2' }} c/u</span>
+                  <span class="item-subtotal">S/ {{ (item.quantity * item.unitPrice) | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Metadatos -->
+        <section class="detail-section detail-meta">
+          <div class="meta-row">
+            <span><i class="fa-solid fa-credit-card"></i> Método de pago</span>
+            <strong>{{ order.paymentMethod }}</strong>
+          </div>
+          <div class="meta-row">
+            <span><i class="fa-regular fa-calendar"></i> Fecha</span>
+            <strong>{{ order.date }}</strong>
+          </div>
+        </section>
+
+        <!-- Totales -->
+        <section class="detail-section detail-totals">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <strong>S/ {{ orderTotal(order).subtotal | number:'1.2-2' }}</strong>
+          </div>
+          <div class="total-row">
+            <span>Envío</span>
+            @if (orderTotal(order).shipping === 0) {
+              <strong class="text-green">Gratis</strong>
+            } @else {
+              <strong>S/ {{ orderTotal(order).shipping | number:'1.2-2' }}</strong>
+            }
+          </div>
+          <div class="total-row total-row--grand">
+            <span>Total</span>
+            <strong>S/ {{ orderTotal(order).total | number:'1.2-2' }}</strong>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-ghost" (click)="closeModal()">
+          Cerrar
+        </button>
+      </footer>
+    </div>
+  </div>
+}

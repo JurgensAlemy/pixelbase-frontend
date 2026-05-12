@@ -1,0 +1,508 @@
+@use '../admin-shell' as *;
+@use '../admin-modals' as *;
+
+/* ============================================================
+   Módulo Roles y Permisos — Tabla, modal de matriz y badges
+   ============================================================ */
+
+/* --- Botón Nuevo rol --- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--admin-blue);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+
+  &:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(13, 110, 253, 0.28);
+  }
+
+  i { font-size: 12px; }
+}
+
+/* --- Toolbar --- */
+.roles-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0 20px;
+  border-bottom: 1px solid var(--admin-border);
+  margin-bottom: 20px;
+}
+
+.search-field {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+
+  i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--admin-text-light);
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 10px;
+    border: 1px solid var(--admin-border);
+    background-color: #f8fafc;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: var(--admin-blue);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+  }
+}
+
+.result-count {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--admin-text-light);
+}
+
+/* --- Stat-value especial para el nombre del rol más usado --- */
+.role-most-used {
+  font-size: 18px !important;
+  line-height: 1.3;
+}
+
+/* --- Celdas y badges de la tabla --- */
+.text-center { text-align: center; }
+.text-right  { text-align: right;  }
+.text-warning { color: #b45309; font-weight: 600; }
+
+.role-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.color-red    { background-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);  }
+  &.color-blue   { background-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15); }
+  &.color-purple { background-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+  &.color-green  { background-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+  &.color-gray   { background-color: #64748b; box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.15);}
+}
+
+.role-name-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #b45309;
+  background-color: #fef3c7;
+  padding: 2px 6px;
+  border-radius: 6px;
+  width: fit-content;
+
+  i { font-size: 9px; }
+}
+
+.role-description {
+  color: var(--admin-text-light);
+  font-size: 13px;
+  max-width: 380px;
+  line-height: 1.4;
+}
+
+/* --- Barra de progreso de permisos en la tabla --- */
+.permission-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 130px;
+}
+
+.permission-ratio {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--admin-text-dark);
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background-color: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  &.color-red    { background-color: #ef4444; }
+  &.color-blue   { background-color: #0d6efd; }
+  &.color-purple { background-color: #8b5cf6; }
+  &.color-green  { background-color: #10b981; }
+  &.color-gray   { background-color: #64748b; }
+}
+
+/* --- Disabled action button (delete en roles sistema) --- */
+.btn-action {
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+      color: var(--admin-text-light);
+      border-color: transparent;
+    }
+  }
+}
+
+/* --- Estado vacío --- */
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+
+  i {
+    font-size: 36px;
+    color: var(--admin-text-light);
+    margin-bottom: 15px;
+  }
+
+  h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--admin-text-dark);
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--admin-text-light);
+  }
+}
+
+/* ============================================================
+   Modal detalle del rol
+   ============================================================ */
+.role-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.detail-section { display: flex; flex-direction: column; gap: 12px; }
+
+.detail-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--admin-text-light);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  i { font-size: 10px; color: var(--admin-blue); }
+}
+
+.role-description-large {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  background-color: #f8fafc;
+  padding: 14px;
+  border-radius: 10px;
+  border-left: 3px solid var(--admin-blue);
+}
+
+.role-meta-row {
+  flex-direction: row !important;
+  gap: 12px;
+
+  @media (max-width: 540px) { flex-direction: column !important; }
+}
+
+.meta-stat {
+  flex: 1;
+  background-color: #f8fafc;
+  padding: 14px 16px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--admin-text-light);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.meta-stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--admin-text-dark);
+}
+
+/* ============================================================
+   Matriz de permisos (vista + edición)
+   ============================================================ */
+.permissions-matrix {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px 14px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  thead th {
+    background-color: #f8fafc;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--admin-text-light);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr:hover { background-color: #f8fafc; }
+
+  td strong { color: var(--admin-text-dark); }
+}
+
+.matrix-check {
+  color: var(--admin-green);
+  font-size: 18px;
+}
+
+.matrix-empty {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.matrix-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--admin-blue);
+}
+
+.matrix-checkbox--all {
+  accent-color: #8b5cf6;
+}
+
+.matrix-table--editable {
+  thead th:last-child {
+    background-color: #f3e8ff;
+    color: #6b21a8;
+  }
+}
+
+/* --- Header de la matriz (label + quick actions) --- */
+.matrix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.matrix-label {
+  font-size: 13px !important;
+  font-weight: 600;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selected-count {
+  background-color: #e0f2fe;
+  color: var(--admin-blue);
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.matrix-quick-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.quick-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: var(--admin-blue);
+    color: var(--admin-blue);
+    background-color: #f0f9ff;
+  }
+
+  i { font-size: 10px; }
+}
+
+/* ============================================================
+   Form general (campos comunes del modal crear/editar)
+   ============================================================ */
+.role-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 14px;
+
+  @media (max-width: 540px) { grid-template-columns: 1fr; }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  input, textarea, select {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    font-size: 14px;
+    color: #0f172a;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+    font-family: inherit;
+
+    &:focus {
+      background-color: #ffffff;
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: #dc3545;
+      background-color: #fef2f2;
+    }
+  }
+
+  textarea { resize: vertical; min-height: 60px; }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+}
+
+.form-error {
+  font-size: 12px;
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* --- Confirmación de borrado --- */
+.confirm-body {
+  padding: 28px 24px 12px;
+  text-align: center;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 14px 0 6px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+
+    strong { color: #0f172a; }
+  }
+}
+
+.confirm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #fee2e2;
+  color: #dc3545;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .roles-toolbar {
+    .search-field { min-width: 100%; }
+    .result-count { margin-left: 0; }
+  }
+
+  .role-description { max-width: none; }
+}
