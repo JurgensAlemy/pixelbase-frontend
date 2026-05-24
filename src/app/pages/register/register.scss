@@ -4,33 +4,143 @@
 .register-body {
   min-height: 100vh;
   @include flex-center;
-  background: linear-gradient(135deg, $navy 0%, $navy-soft 100%);
+  background: linear-gradient(135deg, #E8EEFA 0%, #D6E2F5 100%);
   padding: $spacing-6;
 }
 
 .register-wrapper {
   width: 100%;
-  max-width: 480px;
+  max-width: 960px;
 }
 
 .register-card {
-  @include card;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: $white;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba($navy, 0.08);
+
+  @include md-down { grid-template-columns: 1fr; }
+}
+
+// ============================================================
+// Panel informativo (izquierda)
+// ============================================================
+.register-info {
+  background: $white;
+  color: $color-text;
   padding: $spacing-10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $spacing-8;
+  border-right: 1px solid $color-border;
 
-  @include sm-down { padding: $spacing-6; }
+  @include md-down {
+    display: none;
+  }
 
-  .form-header {
-    margin-bottom: $spacing-8;
-    text-align: center;
+  .register-logo {
+    width: 56px;
+    height: 56px;
+    background: $gray-200;
+    border-radius: $radius-md;
+    @include flex-center;
+    overflow: hidden;
 
-    h2 {
-      font-size: 1.75rem;
-      color: $color-text;
-      margin-bottom: $spacing-2;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .info-content {
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-2;
+      color: $primary;
+      font-size: 0.7rem;
+      font-weight: $font-weight-bold;
+      letter-spacing: 1.5px;
+      margin-bottom: $spacing-4;
+
+      &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: $primary;
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 1.2;
+      color: $navy;
+      margin-bottom: $spacing-4;
+      font-weight: 800;
     }
 
     p {
       color: $color-text-muted;
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: $spacing-3;
+      font-size: 0.85rem;
+      color: $color-text-muted;
+
+      .feature-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: $radius-sm;
+        background: rgba($primary, 0.08);
+        color: $primary;
+        @include flex-center;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+// ============================================================
+// Formulario (derecha)
+// ============================================================
+.register-form-container {
+  padding: $spacing-10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include md-down { padding: $spacing-8 $spacing-6; }
+
+  .form-header {
+    margin-bottom: $spacing-8;
+
+    h2 {
+      font-size: 1.75rem;
+      color: $navy;
+      margin-bottom: $spacing-2;
+      font-weight: 800;
+    }
+
+    p {
+      color: $color-text-muted;
+      font-size: 0.9rem;
     }
   }
 }
@@ -46,7 +156,7 @@
     gap: $spacing-2;
 
     label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: $font-weight-semibold;
       color: $color-text;
     }
@@ -57,21 +167,43 @@
     display: flex;
     align-items: center;
 
-    i {
+    > i {
       position: absolute;
       left: $spacing-4;
       color: $color-text-muted;
+      font-size: 0.9rem;
+    }
+
+    .toggle-password {
+      left: auto;
+      right: $spacing-4;
+      cursor: pointer;
     }
 
     input {
-      @include input-base;
-      padding-left: $spacing-10;
+      width: 100%;
+      padding: $spacing-3 $spacing-10;
+      border: 1px solid $color-border;
+      border-radius: $radius-md;
+      font-size: 0.9rem;
+      background: $gray-100;
+      transition: border-color $transition-base, background $transition-base;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        background: $white;
+      }
+
+      &::placeholder {
+        color: $gray-500;
+      }
     }
   }
 
   .field-error {
     color: $danger;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .error-message {
@@ -79,25 +211,42 @@
     color: $danger;
     padding: $spacing-3;
     border-radius: $radius-md;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-align: center;
   }
 
   .btn-register {
-    @include button-base;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
     background: $primary;
     color: $white;
+    border: none;
     padding: $spacing-4;
+    border-radius: $radius-md;
+    font-weight: $font-weight-bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background $transition-base, transform $transition-base;
+    box-shadow: 0 4px 12px rgba($primary, 0.3);
 
     &:not(:disabled):hover {
       background: $primary-dark;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 
   .form-footer {
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: $color-text-muted;
+    margin-top: $spacing-2;
 
     a {
       color: $primary;
