@@ -1,0 +1,476 @@
+<app-header></app-header>
+
+<main class="product-detail-page">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb-inner">
+      <a href="home.html">Inicio</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="products.html">Productos</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="products.html">Tarjetas gráficas</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>GeForce RTX 4090 24GB</span>
+    </div>
+  </div>
+
+  <div class="detail-container">
+
+    <!-- ── COLUMNA IZQUIERDA: Galería ── -->
+    <div class="detail-gallery">
+      <div class="gallery-main">
+        <span class="discount-badge-lg">-30%</span>
+        <img src="img/generated-1776449462383.png" alt="GeForce RTX 4090" id="mainImage">
+        <button class="gallery-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+      </div>
+      <div class="gallery-thumbs">
+        <button class="thumb active">
+          <img src="img/generated-1776449462383.png" alt="">
+        </button>
+        <button class="thumb">
+          <img src="img/generated-1776449484740.png" alt="">
+        </button>
+        <button class="thumb">
+          <img src="img/generated-1776449488887.png" alt="">
+        </button>
+        <button class="thumb">
+          <img src="img/generated-1776449494133.png" alt="">
+        </button>
+      </div>
+    </div>
+
+    <!-- ── COLUMNA DERECHA: Info ── -->
+    <div class="detail-info">
+
+      <div class="detail-badges">
+        <span class="badge-brand">NVIDIA</span>
+        <span class="badge-stock stock-in">
+          <i class="fa-solid fa-circle-check"></i> En stock (12 unid.)
+        </span>
+      </div>
+
+      <h1 class="detail-title">GeForce RTX 4090 24GB GDDR6X</h1>
+
+      <div class="detail-rating">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star-half-stroke"></i>
+        </div>
+        <span class="rating-score">4.5</span>
+        <a href="#reviews" class="rating-count">(124 reseñas)</a>
+        <span class="rating-sep">·</span>
+        <span class="sold-count">215 vendidos</span>
+      </div>
+
+      <!-- Precios -->
+      <div class="detail-prices">
+        <span class="detail-old-price">Antes: S/ 2,599.00</span>
+        <div class="detail-price-row">
+          <span class="detail-new-price">S/ 1,799.00</span>
+          <span class="detail-discount-tag">-30% OFF</span>
+        </div>
+        <p class="detail-saving">Ahorras S/ 800.00 con esta oferta</p>
+      </div>
+
+      <!-- Cuotas -->
+      <div class="detail-installments">
+        <i class="fa-solid fa-credit-card"></i>
+        <span>12 cuotas sin interés de <strong>S/ 149.92</strong> con Visa o Mastercard</span>
+      </div>
+
+      <!-- Envío -->
+      <div class="detail-shipping">
+        <div class="shipping-item">
+          <i class="fa-solid fa-truck-fast"></i>
+          <div>
+            <strong>Envío gratis</strong>
+            <span>Llega el <strong>Lunes 26 de mayo</strong> a Lima Metropolitana</span>
+          </div>
+        </div>
+        <div class="shipping-item">
+          <i class="fa-solid fa-store"></i>
+          <div>
+            <strong>Recojo en tienda</strong>
+            <span>Disponible hoy en Av. La Marina 1234, San Miguel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cantidad -->
+      <div class="detail-quantity">
+        <span class="quantity-label">Cantidad:</span>
+        <div class="quantity-control">
+          <button class="qty-btn" id="qtyMinus"><i class="fa-solid fa-minus"></i></button>
+          <span class="qty-value" id="qtyValue">1</span>
+          <button class="qty-btn" id="qtyPlus"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <span class="qty-max">Máx. 5 por compra</span>
+      </div>
+
+      <!-- CTAs -->
+      <div class="detail-actions">
+        <a href="cart.html" class="btn-buy-now">
+          <i class="fa-solid fa-bolt"></i> Comprar ahora
+        </a>
+        <button class="btn-add-to-cart">
+          <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
+        </button>
+        <button class="btn-wishlist">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+      </div>
+
+      <!-- Garantía -->
+      <div class="detail-guarantees">
+        <div class="guarantee-item">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Garantía oficial 3 años</span>
+        </div>
+        <div class="guarantee-item">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span>Devolución 30 días</span>
+        </div>
+        <div class="guarantee-item">
+          <i class="fa-solid fa-lock"></i>
+          <span>Pago 100% seguro</span>
+        </div>
+      </div>
+
+      <!-- Compartir -->
+      <div class="detail-share">
+        <span>Compartir:</span>
+        <button class="share-btn"><i class="fa-brands fa-facebook-f"></i></button>
+        <button class="share-btn"><i class="fa-brands fa-whatsapp"></i></button>
+        <button class="share-btn"><i class="fa-brands fa-twitter"></i></button>
+        <button class="share-btn copy-link"><i class="fa-solid fa-link"></i></button>
+      </div>
+    </div>
+
+    <!-- ── COLUMNA DERECHA: Resumen compra ── -->
+    <div class="detail-buy-card">
+      <div class="buy-card-price">
+        <span class="buy-old">S/ 2,599.00</span>
+        <span class="buy-new">S/ 1,799.00</span>
+      </div>
+
+      <div class="buy-card-shipping">
+        <i class="fa-solid fa-truck-fast"></i>
+        <span>Envío gratis a Lima</span>
+      </div>
+
+      <div class="buy-card-stock">
+        <i class="fa-solid fa-circle-check" style="color: var(--success)"></i>
+        <span>En stock · 12 unidades</span>
+      </div>
+
+      <a href="cart.html" class="btn-buy-card-cart">
+        Agregar al carrito
+      </a>
+      <a href="checkout.html" class="btn-buy-card-now">
+        Comprar ahora
+      </a>
+
+      <div class="buy-card-secure">
+        <i class="fa-solid fa-lock"></i> Transacción segura
+      </div>
+
+      <div class="buy-card-seller">
+        <span>Vendido por</span>
+        <strong>PixelBase Oficial</strong>
+      </div>
+    </div>
+
+  </div><!-- /detail-container -->
+
+  <!-- ── TABS: Descripción / Especificaciones / Reseñas ── -->
+  <div class="detail-tabs-section">
+    <div class="tabs-container">
+
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="descripcion">Descripción</button>
+        <button class="tab-btn" data-tab="especificaciones">Especificaciones</button>
+        <button class="tab-btn" data-tab="reviews">Reseñas (124)</button>
+      </div>
+
+      <!-- Descripción -->
+      <div class="tab-panel active" id="tab-descripcion">
+        <h3>GeForce RTX 4090 — La GPU más poderosa para gaming y creación</h3>
+        <p>La NVIDIA GeForce RTX 4090 es la tarjeta gráfica más avanzada del mercado para consumidores. Con 16,384
+          núcleos CUDA de arquitectura Ada Lovelace, 24GB de memoria GDDR6X y soporte para DLSS 3.0 con generación de
+          frames, ofrece un rendimiento sin precedentes en gaming 4K y cargas de trabajo de IA.</p>
+        <p>Ideal para gamers entusiastas, creadores de contenido y profesionales que necesitan el máximo rendimiento en
+          renderizado, modelado 3D y edición de video en tiempo real.</p>
+        <ul class="detail-feature-list">
+          <li><i class="fa-solid fa-check"></i> 16,384 núcleos CUDA (Ada Lovelace)</li>
+          <li><i class="fa-solid fa-check"></i> 24GB GDDR6X — 384-bit de ancho de banda</li>
+          <li><i class="fa-solid fa-check"></i> DLSS 3.0 con Frame Generation</li>
+          <li><i class="fa-solid fa-check"></i> Ray Tracing de 3ª generación</li>
+          <li><i class="fa-solid fa-check"></i> Soporte para 4K@240fps y 8K gaming</li>
+          <li><i class="fa-solid fa-check"></i> PCIe 4.0 x16</li>
+        </ul>
+      </div>
+
+      <!-- Especificaciones -->
+      <div class="tab-panel" id="tab-especificaciones">
+        <div class="specs-grid">
+          <div class="specs-group">
+            <h4>Procesador gráfico</h4>
+            <table class="specs-table">
+              <tr>
+                <td>Arquitectura</td>
+                <td>Ada Lovelace</td>
+              </tr>
+              <tr>
+                <td>Núcleos CUDA</td>
+                <td>16,384</td>
+              </tr>
+              <tr>
+                <td>RT Cores</td>
+                <td>128 (3ª gen)</td>
+              </tr>
+              <tr>
+                <td>Tensor Cores</td>
+                <td>512 (4ª gen)</td>
+              </tr>
+              <tr>
+                <td>Frecuencia base</td>
+                <td>2,235 MHz</td>
+              </tr>
+              <tr>
+                <td>Frecuencia boost</td>
+                <td>2,520 MHz</td>
+              </tr>
+              <tr>
+                <td>TDP</td>
+                <td>450W</td>
+              </tr>
+            </table>
+          </div>
+          <div class="specs-group">
+            <h4>Memoria</h4>
+            <table class="specs-table">
+              <tr>
+                <td>Capacidad</td>
+                <td>24 GB</td>
+              </tr>
+              <tr>
+                <td>Tipo</td>
+                <td>GDDR6X</td>
+              </tr>
+              <tr>
+                <td>Bus</td>
+                <td>384-bit</td>
+              </tr>
+              <tr>
+                <td>Ancho de banda</td>
+                <td>1,008 GB/s</td>
+              </tr>
+            </table>
+          </div>
+          <div class="specs-group">
+            <h4>Conectividad</h4>
+            <table class="specs-table">
+              <tr>
+                <td>Interfaz</td>
+                <td>PCIe 4.0 x16</td>
+              </tr>
+              <tr>
+                <td>Salidas</td>
+                <td>3x DisplayPort 1.4a, 1x HDMI 2.1</td>
+              </tr>
+              <tr>
+                <td>Resolución máx.</td>
+                <td>7680 x 4320 (8K)</td>
+              </tr>
+              <tr>
+                <td>Multi-monitor</td>
+                <td>Hasta 4 pantallas</td>
+              </tr>
+            </table>
+          </div>
+          <div class="specs-group">
+            <h4>Dimensiones</h4>
+            <table class="specs-table">
+              <tr>
+                <td>Longitud</td>
+                <td>336 mm</td>
+              </tr>
+              <tr>
+                <td>Slots</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>Conectores de poder</td>
+                <td>1x 16-pin (600W)</td>
+              </tr>
+              <tr>
+                <td>PSU recomendado</td>
+                <td>850W</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reseñas -->
+      <div class="tab-panel" id="tab-reviews">
+        <div class="reviews-summary">
+          <div class="reviews-score">
+            <span class="score-big">4.5</span>
+            <div class="score-stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+            </div>
+            <span class="score-total">124 reseñas</span>
+          </div>
+          <div class="reviews-bars">
+            <div class="review-bar-row"><span>5 <i class="fa-solid fa-star"></i></span>
+              <div class="rbar">
+                <div style="width:62%"></div>
+              </div><span>62%</span>
+            </div>
+            <div class="review-bar-row"><span>4 <i class="fa-solid fa-star"></i></span>
+              <div class="rbar">
+                <div style="width:24%"></div>
+              </div><span>24%</span>
+            </div>
+            <div class="review-bar-row"><span>3 <i class="fa-solid fa-star"></i></span>
+              <div class="rbar">
+                <div style="width:9%"></div>
+              </div><span>9%</span>
+            </div>
+            <div class="review-bar-row"><span>2 <i class="fa-solid fa-star"></i></span>
+              <div class="rbar">
+                <div style="width:3%"></div>
+              </div><span>3%</span>
+            </div>
+            <div class="review-bar-row"><span>1 <i class="fa-solid fa-star"></i></span>
+              <div class="rbar">
+                <div style="width:2%"></div>
+              </div><span>2%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reviews-list">
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-avatar">CR</div>
+              <div>
+                <strong>Carlos R.</strong>
+                <div class="review-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+              </div>
+              <span class="review-date">15 abr. 2026</span>
+            </div>
+            <p class="review-text">Increíble rendimiento en 4K. Juego todo a máximos sin problema. Llegó bien embalado y
+              en 2 días. 100% recomendado si tienes el presupuesto.</p>
+            <div class="review-useful">
+              <button><i class="fa-regular fa-thumbs-up"></i> Útil (12)</button>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-avatar">MG</div>
+              <div>
+                <strong>María G.</strong>
+                <div class="review-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                </div>
+              </div>
+              <span class="review-date">3 mar. 2026</span>
+            </div>
+            <p class="review-text">Excelente para renderizado 3D. Reduje mis tiempos de render a la mitad. Un poco
+              ruidosa bajo carga máxima pero muy capaz.</p>
+            <div class="review-useful">
+              <button><i class="fa-regular fa-thumbs-up"></i> Útil (8)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Productos relacionados -->
+  <div class="related-section">
+    <div class="related-container">
+      <h2 class="related-title">También te puede interesar</h2>
+      <div class="related-grid">
+        <a href="product-detail.html" class="related-card">
+          <img src="img/generated-1776449484740.png" alt="Ryzen 9 7950X">
+          <div class="related-info">
+            <span class="related-brand">AMD</span>
+            <p class="related-name">Ryzen 9 7950X 16 cores</p>
+            <span class="related-price">S/ 2,199</span>
+          </div>
+        </a>
+        <a href="product-detail.html" class="related-card">
+          <img src="img/generated-1776449488887.png" alt="Corsair DDR5">
+          <div class="related-info">
+            <span class="related-brand">CORSAIR</span>
+            <p class="related-name">Vengeance DDR5 64GB RGB</p>
+            <span class="related-price">S/ 1,249</span>
+          </div>
+        </a>
+        <a href="product-detail.html" class="related-card">
+          <img src="img/generated-1776453894572.png" alt="Monitor ROG">
+          <div class="related-info">
+            <span class="related-brand">ASUS</span>
+            <p class="related-name">ROG Swift 27" 240Hz</p>
+            <span class="related-price">S/ 2,369</span>
+          </div>
+        </a>
+        <a href="product-detail.html" class="related-card">
+          <img src="img/generated-1776449494133.png" alt="Samsung SSD">
+          <div class="related-info">
+            <span class="related-brand">SAMSUNG</span>
+            <p class="related-name">SSD 990 Pro 2TB NVMe</p>
+            <span class="related-price">S/ 749</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<app-footer></app-footer>
+
+<script>
+  // Galería de imágenes
+  document.querySelectorAll('.thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+      document.getElementById('mainImage').src = thumb.querySelector('img').src;
+    });
+  });
+
+  // Cantidad
+  let qty = 1;
+  document.getElementById('qtyMinus').addEventListener('click', () => {
+    if (qty > 1) { qty--; document.getElementById('qtyValue').textContent = qty; }
+  });
+  document.getElementById('qtyPlus').addEventListener('click', () => {
+    if (qty < 5) { qty++; document.getElementById('qtyValue').textContent = qty; }
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>

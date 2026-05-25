@@ -1,0 +1,308 @@
+<app-header></app-header>
+
+<main class="cart-page">
+
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb-inner">
+      <a routerLink="home">Inicio</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Carrito de compras</span>
+    </div>
+  </div>
+
+  <div class="cart-container">
+
+    <!-- Pasos del proceso -->
+    <div class="checkout-steps">
+      <div class="step active">
+        <div class="step-circle">1</div>
+        <span>Carrito</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <span>Envío</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <span>Pago</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <span>Confirmación</span>
+      </div>
+    </div>
+
+    <div class="cart-layout">
+
+      <!-- ── ITEMS DEL CARRITO ── -->
+      <div class="cart-items">
+        <div class="cart-items-header">
+          <h2>Mi carrito <span class="cart-count">(3 productos)</span></h2>
+          <button class="btn-clear-cart">
+            <i class="fa-solid fa-trash"></i> Vaciar carrito
+          </button>
+        </div>
+
+        <!-- Item 1 -->
+        <div class="cart-item">
+          <div class="item-image">
+            <img src="img/generated-1776449462383.png" alt="RTX 4090">
+          </div>
+          <div class="item-details">
+            <span class="item-brand">NVIDIA</span>
+            <h3 class="item-name">GeForce RTX 4090 24GB GDDR6X</h3>
+            <div class="item-meta">
+              <span class="item-sku">SKU: NV-RTX4090-24G</span>
+              <span class="item-stock">
+                <i class="fa-solid fa-circle-check"></i> En stock
+              </span>
+            </div>
+            <div class="item-actions-mobile">
+              <div class="quantity-control">
+                <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+                <span class="qty-value">1</span>
+                <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <button class="btn-remove-item">
+                <i class="fa-regular fa-trash-can"></i> Eliminar
+              </button>
+              <button class="btn-save-later">
+                <i class="fa-regular fa-bookmark"></i> Guardar
+              </button>
+            </div>
+          </div>
+          <div class="item-quantity">
+            <div class="quantity-control">
+              <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+              <span class="qty-value">1</span>
+              <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="item-price">
+            <span class="item-old-price">S/ 2,599.00</span>
+            <span class="item-new-price">S/ 1,799.00</span>
+            <span class="item-discount">-30%</span>
+          </div>
+          <div class="item-remove">
+            <button class="btn-remove-item" title="Eliminar">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="cart-item">
+          <div class="item-image">
+            <img src="img/generated-1776449488887.png" alt="Corsair DDR5">
+          </div>
+          <div class="item-details">
+            <span class="item-brand">CORSAIR</span>
+            <h3 class="item-name">Vengeance DDR5 64GB RGB 6000MHz</h3>
+            <div class="item-meta">
+              <span class="item-sku">SKU: CO-DDR5-64GB</span>
+              <span class="item-stock">
+                <i class="fa-solid fa-circle-check"></i> En stock
+              </span>
+            </div>
+            <div class="item-actions-mobile">
+              <div class="quantity-control">
+                <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+                <span class="qty-value">2</span>
+                <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <button class="btn-remove-item">
+                <i class="fa-regular fa-trash-can"></i> Eliminar
+              </button>
+            </div>
+          </div>
+          <div class="item-quantity">
+            <div class="quantity-control">
+              <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+              <span class="qty-value">2</span>
+              <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="item-price">
+            <span class="item-old-price">S/ 1,469.00</span>
+            <span class="item-new-price">S/ 2,498.00</span>
+            <span class="item-unit-price">S/ 1,249.00 c/u</span>
+          </div>
+          <div class="item-remove">
+            <button class="btn-remove-item" title="Eliminar">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="cart-item">
+          <div class="item-image">
+            <img src="img/generated-1776453894572.png" alt="ASUS Monitor">
+          </div>
+          <div class="item-details">
+            <span class="item-brand">ASUS</span>
+            <h3 class="item-name">ROG Swift 27" 240Hz QHD Monitor</h3>
+            <div class="item-meta">
+              <span class="item-sku">SKU: AS-ROG27-240</span>
+              <span class="item-stock item-low-stock">
+                <i class="fa-solid fa-triangle-exclamation"></i> Solo 7 disponibles
+              </span>
+            </div>
+            <div class="item-actions-mobile">
+              <div class="quantity-control">
+                <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+                <span class="qty-value">1</span>
+                <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <button class="btn-remove-item">
+                <i class="fa-regular fa-trash-can"></i> Eliminar
+              </button>
+            </div>
+          </div>
+          <div class="item-quantity">
+            <div class="quantity-control">
+              <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+              <span class="qty-value">1</span>
+              <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="item-price">
+            <span class="item-old-price">S/ 2,890.00</span>
+            <span class="item-new-price">S/ 2,369.00</span>
+            <span class="item-discount">-18%</span>
+          </div>
+          <div class="item-remove">
+            <button class="btn-remove-item" title="Eliminar">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Seguir comprando -->
+        <div class="cart-continue">
+          <a routerLink="products" class="btn-continue">
+            <i class="fa-solid fa-arrow-left"></i> Seguir comprando
+          </a>
+        </div>
+      </div><!-- /cart-items -->
+
+      <!-- ── RESUMEN DE COMPRA ── -->
+      <div class="cart-summary">
+        <h3 class="summary-title">Resumen de compra</h3>
+
+        <div class="summary-lines">
+          <div class="summary-line">
+            <span>Subtotal (4 ítems)</span>
+            <span>S/ 7,665.00</span>
+          </div>
+          <div class="summary-line discount-line">
+            <span>Descuentos</span>
+            <span>- S/ 999.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Envío</span>
+            <span class="free-shipping">Gratis</span>
+          </div>
+          <div class="summary-line">
+            <span>IGV (18%)</span>
+            <span>Incluido</span>
+          </div>
+        </div>
+
+        <div class="summary-coupon">
+          <div class="coupon-input">
+            <input type="text" placeholder="Código de descuento">
+            <button class="btn-apply-coupon">Aplicar</button>
+          </div>
+        </div>
+
+        <div class="summary-total">
+          <span>Total a pagar</span>
+          <span class="total-amount">S/ 6,666.00</span>
+        </div>
+
+        <p class="summary-saving">
+          <i class="fa-solid fa-tag"></i>
+          Estás ahorrando <strong>S/ 999.00</strong> en esta compra
+        </p>
+
+        <a routerLink="checkout" class="btn-checkout">
+          Proceder al pago <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <div class="summary-payment-methods">
+          <span>Métodos de pago:</span>
+          <div class="payment-icons">
+            <span class="pay-icon">VISA</span>
+            <span class="pay-icon">MC</span>
+            <span class="pay-icon yape">Yape</span>
+            <span class="pay-icon plin">Plin</span>
+          </div>
+        </div>
+
+        <div class="summary-guarantees">
+          <div class="guarantee-mini">
+            <i class="fa-solid fa-lock"></i>
+            <span>Compra 100% segura</span>
+          </div>
+          <div class="guarantee-mini">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Devolución 30 días</span>
+          </div>
+        </div>
+      </div><!-- /cart-summary -->
+
+    </div><!-- /cart-layout -->
+
+    <!-- Productos recomendados -->
+    <div class="cart-recommendations">
+      <h3 class="recommendations-title">
+        <i class="fa-solid fa-fire"></i> También te puede interesar
+      </h3>
+      <div class="recommendations-grid">
+        <a routerLink="product-detail/1" class="rec-card">
+          <img src="img/generated-1776449484740.png" alt="Ryzen 9">
+          <div class="rec-info">
+            <span class="rec-brand">AMD</span>
+            <p>Ryzen 9 7950X</p>
+            <strong>S/ 2,199</strong>
+            <button class="btn-rec-add"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </a>
+        <a routerLink="product-detail/2" class="rec-card">
+          <img src="img/generated-1776449494133.png" alt="Samsung SSD">
+          <div class="rec-info">
+            <span class="rec-brand">SAMSUNG</span>
+            <p>SSD 990 Pro 2TB</p>
+            <strong>S/ 749</strong>
+            <button class="btn-rec-add"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </a>
+        <a routerLink="product-detail/3" class="rec-card">
+          <img src="img/generated-1776454451190.png" alt="Corsair K70">
+          <div class="rec-info">
+            <span class="rec-brand">CORSAIR</span>
+            <p>K70 RGB PRO</p>
+            <strong>S/ 760</strong>
+            <button class="btn-rec-add"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </a>
+        <a routerLink="product-detail/4" class="rec-card">
+          <img src="img/generated-1776454456158.png" alt="Razer DeathAdder">
+          <div class="rec-info">
+            <span class="rec-brand">RAZER</span>
+            <p>DeathAdder V3 Pro</p>
+            <strong>S/ 520</strong>
+            <button class="btn-rec-add"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /cart-container -->
+</main>
+
+<app-footer></app-footer>
