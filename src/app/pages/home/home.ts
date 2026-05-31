@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+
+// 1. Tienes que importar las clases de tus componentes aquí arriba.
+// Asegúrate de que las rutas y los nombres de las clases coincidan con cómo los tienes.
 import { Header } from '../../components/header/header';
-import { Footer } from '../../components/footer/footer';
 import { Hero } from '../../components/hero/hero';
 import { Categories } from '../../components/categories/categories';
+import { Footer } from '../../components/footer/footer';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, Header, Footer, Hero, Categories],
+  // 2. ¡AQUÍ ESTÁ LA MAGIA! Metes los componentes en este arreglo de imports:
+  imports: [Header, Hero, Categories, Footer],
+
+  // 3. Aquí Angular ya sabe que tus archivos no llevan ".component"
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class Home { }
+export class Home {
+  // La lógica de tu Home va aquí
+}
