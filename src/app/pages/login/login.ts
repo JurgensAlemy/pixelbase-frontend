@@ -36,7 +36,8 @@ export class Login {
     this.auth.login(this.form.value).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/dashboard']);
+        const target = this.auth.isAdmin() ? '/dashboard' : '/mi-cuenta';
+        this.router.navigate([target]);
       },
       error: (err) => {
         this.loading.set(false);

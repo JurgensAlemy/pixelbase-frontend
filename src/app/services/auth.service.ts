@@ -40,6 +40,10 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  isAdmin(): boolean {
+    return this.currentUser()?.role === 'ADMIN';
+  }
+
   private persist(res: AuthResponse): void {
     localStorage.setItem(TOKEN_KEY, res.token);
     const user = { email: res.email, role: res.role };

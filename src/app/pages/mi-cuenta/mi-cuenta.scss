@@ -1,0 +1,237 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.cuenta-page {
+  background: $gray-100;
+  min-height: 70vh;
+  padding: $spacing-8 0 $spacing-12;
+}
+
+.cuenta-container {
+  @include container;
+}
+
+.cuenta-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-5;
+  margin-bottom: $spacing-8;
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $primary;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  h1 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: $navy;
+    word-break: break-all;
+  }
+}
+
+.role-badge {
+  background: rgba($primary, 0.1);
+  color: $primary;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: $radius-full;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.cuenta-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: $spacing-6;
+  align-items: start;
+
+  @include md-down {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== NAV ===== */
+.cuenta-nav {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $color-border;
+  padding: $spacing-3;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 20px;
+
+  @include md-down {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  border-radius: $radius-md;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $color-text-muted;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-align: left;
+  font-family: inherit;
+  transition: all $transition-base;
+  white-space: nowrap;
+
+  i {
+    width: 18px;
+    text-align: center;
+  }
+
+  &:hover {
+    background: $gray-100;
+    color: $navy;
+  }
+
+  &.active {
+    background: rgba($primary, 0.08);
+    color: $primary;
+  }
+
+  &.logout {
+    margin-top: $spacing-2;
+    border-top: 1px solid $color-border;
+    border-radius: 0;
+    padding-top: $spacing-4;
+    color: $danger;
+
+    &:hover {
+      background: rgba($danger, 0.06);
+    }
+  }
+}
+
+/* ===== CONTENT ===== */
+.cuenta-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+}
+
+.content-card {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $color-border;
+  padding: $spacing-6;
+
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: $navy;
+    margin-bottom: $spacing-5;
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    i {
+      color: $primary;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-4;
+
+  @include md-down {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-item {
+  background: $gray-100;
+  border-radius: $radius-md;
+  padding: $spacing-4;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .info-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $color-text-muted;
+  }
+
+  strong {
+    font-size: 0.95rem;
+    color: $navy;
+    word-break: break-all;
+  }
+}
+
+/* ===== EMPTY BLOCKS ===== */
+.empty-block {
+  text-align: center;
+  padding: $spacing-8 $spacing-4;
+  background: $gray-100;
+  border-radius: $radius-lg;
+
+  i {
+    font-size: 2.5rem;
+    color: $gray-300;
+    margin-bottom: $spacing-3;
+    display: block;
+  }
+
+  h3 {
+    font-size: 1rem;
+    color: $navy;
+    margin-bottom: $spacing-2;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: $color-text-muted;
+    max-width: 420px;
+    margin: 0 auto $spacing-4;
+    line-height: 1.6;
+  }
+}
+
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $primary;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,221 @@
+<app-header></app-header>
+
+<main class="catalogo-page">
+  <div class="catalogo-layout">
+
+    <!-- SIDEBAR FILTROS -->
+    <aside class="filters-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-header">
+          <h3><i class="fa-solid fa-sliders"></i> Filtros</h3>
+          <button class="clear-btn" (click)="clearFilters()">Limpiar</button>
+        </div>
+
+        <!-- Búsqueda -->
+        <div class="filter-section">
+          <h4>Buscar</h4>
+          <div class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Nombre, SKU..." [(ngModel)]="search" (keydown.enter)="applyFilters()" />
+          </div>
+        </div>
+
+        <!-- Categorías -->
+        <div class="filter-section">
+          <h4>Categorías</h4>
+          <ul class="filter-list">
+            <li>
+              <button class="filter-option" [class.active]="selectedCategoryId() === null"
+                (click)="selectCategory(null)">
+                <i class="fa-solid fa-grid-2"></i> Todas
+              </button>
+            </li>
+            @for (cat of categories(); track cat.id) {
+            <li>
+              <button class="filter-option" [class.active]="selectedCategoryId() === cat.id"
+                (click)="selectCategory(cat.id)">
+                <i class="fa-solid fa-chevron-right"></i> {{ cat.name }}
+              </button>
+              @if (cat.subCategories?.length) {
+              <ul class="sub-list">
+                @for (sub of cat.subCategories; track sub.id) {
+                <li>
+                  <button class="filter-option sub" [class.active]="selectedCategoryId() === sub.id"
+                    (click)="selectCategory(sub.id)">
+                    {{ sub.name }}
+                  </button>
+                </li>
+                }
+              </ul>
+              }
+            </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Marcas -->
+        <div class="filter-section">
+          <h4>Marcas</h4>
+          <ul class="filter-list">
+            <li>
+              <button class="filter-option" [class.active]="selectedBrandId() === null" (click)="selectBrand(null)">
+                Todas las marcas
+              </button>
+            </li>
+            @for (brand of brands(); track brand.id) {
+            <li>
+              <button class="filter-option" [class.active]="selectedBrandId() === brand.id"
+                (click)="selectBrand(brand.id)">
+                {{ brand.name }}
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Precio -->
+        <div class="filter-section">
+          <h4>Precio (S/)</h4>
+          <div class="price-inputs">
+            <input type="number" placeholder="Mín" [(ngModel)]="minPrice" min="0" />
+            <span>—</span>
+            <input type="number" placeholder="Máx" [(ngModel)]="maxPrice" min="0" />
+          </div>
+          <button class="apply-btn" (click)="applyFilters()">Aplicar</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="catalogo-content">
+
+      <!-- Toolbar -->
+      <div class="catalogo-toolbar">
+        <div class="results-info">
+          @if (loading()) {
+          <span>Cargando...</span>
+          } @else {
+          <span><strong>{{ totalElements() }}</strong> productos encontrados</span>
+          }
+        </div>
+        <div class="sort-control">
+          <label for="sortSelect">Ordenar por:</label>
+          <select id="sortSelect" [(ngModel)]="sortOrder" (change)="applyFilters()">
+            <option value="updatedAt,desc">Más recientes</option>
+            <option value="price,asc">Precio: menor a mayor</option>
+            <option value="price,desc">Precio: mayor a menor</option>
+            <option value="name,asc">Nombre A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Estado de error -->
+      @if (error()) {
+      <div class="error-state">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p>{{ error() }}</p>
+        <button (click)="loadProducts()">Reintentar</button>
+      </div>
+      }
+
+      <!-- Loading skeleton -->
+      @if (loading()) {
+      <div class="products-grid">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+        <div class="product-card skeleton">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text short"></div>
+          <div class="skeleton-text price"></div>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Grid de productos -->
+      @if (!loading() && !error()) {
+      @if (products().length === 0) {
+      <div class="empty-state">
+        <i class="fa-solid fa-box-open"></i>
+        <h3>Sin productos</h3>
+        <p>No encontramos productos con los filtros seleccionados.</p>
+        <button (click)="clearFilters()">Ver todos</button>
+      </div>
+      } @else {
+      <div class="products-grid">
+        @for (product of products(); track product.slug) {
+        <article class="product-card">
+          <a [routerLink]="['/producto', product.slug]" class="card-link">
+            <div class="card-image">
+              @if (hasDiscount(product)) {
+              <span class="discount-badge">-{{ discountPercent(product) }}%</span>
+              }
+              @if (product.stock === 0) {
+              <span class="out-badge">Agotado</span>
+              }
+              @if (product.mainImageUrl) {
+              <img [src]="product.mainImageUrl" [alt]="product.name" loading="lazy" />
+              } @else {
+              <div class="img-placeholder">
+                <i class="fa-solid fa-image"></i>
+              </div>
+              }
+            </div>
+            <div class="card-body">
+              <span class="brand-label">{{ product.brandName }}</span>
+              <h3 class="product-name">{{ product.name }}</h3>
+              <div class="price-block">
+                @if (product.originalPrice) {
+                <span class="old-price">S/ {{ product.originalPrice | number:'1.2-2' }}</span>
+                }
+                <span class="current-price">S/ {{ product.price | number:'1.2-2' }}</span>
+              </div>
+              @if (product.stock > 0 && product.stock <= 5) { <span class="low-stock">¡Últimas {{ product.stock }}
+                unidades!</span>
+                }
+            </div>
+          </a>
+          <div class="card-footer">
+            <button class="add-cart-btn" [disabled]="product.stock === 0" (click)="addToCart(product, $event)">
+              <i class="fa-solid fa-cart-plus"></i>
+              {{ product.stock === 0 ? 'Sin stock' : 'Agregar' }}
+            </button>
+            <a [routerLink]="['/producto', product.slug]" class="detail-btn">
+              <i class="fa-solid fa-eye"></i>
+            </a>
+          </div>
+        </article>
+        }
+      </div>
+
+      <!-- Paginación -->
+      @if (totalPages() > 1) {
+      <div class="pagination">
+        <button class="page-btn" [disabled]="currentPage() === 0" (click)="goToPage(currentPage() - 1)">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        @for (page of pages; track page) {
+        <button class="page-btn" [class.active]="page === currentPage()" (click)="goToPage(page)">
+          {{ page + 1 }}
+        </button>
+        }
+        <button class="page-btn" [disabled]="currentPage() === totalPages() - 1" (click)="goToPage(currentPage() + 1)">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+      }
+      }
+      }
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>
+
+<!-- Toast -->
+@if (toastMessage()) {
+<div class="cart-toast">
+  <i class="fa-solid fa-circle-check"></i>
+  <span>{{ toastMessage() }}</span>
+</div>
+}

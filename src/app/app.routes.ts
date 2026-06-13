@@ -9,12 +9,29 @@ import { Customers } from './pages/dashboard/customers/customers';
 import { Reports } from './pages/dashboard/reports/reports';
 import { Settings } from './pages/dashboard/settings/settings';
 import { Roles } from './pages/dashboard/roles/roles';
+import { Catalogo } from './pages/catalogo/catalogo';
+import { Producto } from './pages/producto/producto';
+import { Carrito } from './pages/carrito/carrito';
+import { Checkout } from './pages/checkout/checkout';
+import { MiCuenta } from './pages/mi-cuenta/mi-cuenta';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // Storefront público
   { path: '', component: Home },
+  { path: 'catalogo', component: Catalogo },
+  { path: 'producto/:slug', component: Producto },
+  { path: 'carrito', component: Carrito },
+  { path: 'checkout', component: Checkout },
+
+  // Auth
   { path: 'login', component: Login },
   { path: 'register', component: Register },
+
+  // Cliente (protegido)
+  { path: 'mi-cuenta', component: MiCuenta, canActivate: [authGuard] },
+
+  // Admin (protegido)
   { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
   { path: 'productos', component: Products, canActivate: [authGuard] },
   { path: 'pedidos', component: Orders, canActivate: [authGuard] },
@@ -22,5 +39,6 @@ export const routes: Routes = [
   { path: 'reportes', component: Reports, canActivate: [authGuard] },
   { path: 'ajustes', component: Settings, canActivate: [authGuard] },
   { path: 'roles', component: Roles, canActivate: [authGuard] },
+
   { path: '**', redirectTo: '' }
 ];

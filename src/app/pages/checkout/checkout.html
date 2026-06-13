@@ -1,0 +1,343 @@
+<app-header></app-header>
+
+<main class="checkout-page">
+  <div class="checkout-container">
+
+    <!-- STEPPER -->
+    @if (step() !== 'confirmacion') {
+    <div class="stepper">
+      <div class="step" [class.active]="stepIndex() >= 0" [class.done]="stepIndex() > 0">
+        <div class="step-circle">
+          @if (stepIndex() > 0) { <i class="fa-solid fa-check"></i> } @else { 1 }
+        </div>
+        <span>Datos personales</span>
+      </div>
+      <div class="step-line" [class.done]="stepIndex() > 0"></div>
+      <div class="step" [class.active]="stepIndex() >= 1">
+        <div class="step-circle">2</div>
+        <span>Método de pago</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <span>Confirmación</span>
+      </div>
+    </div>
+    }
+
+    <!-- ===== CONFIRMACIÓN ===== -->
+    @if (step() === 'confirmacion') {
+    <div class="confirmation">
+      <div class="confirm-icon success">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h1>¡Pedido confirmado!</h1>
+      <p class="confirm-subtitle">
+        Gracias por tu compra. Tu pedido ha sido registrado exitosamente.
+      </p>
+      <div class="order-number-box">
+        <span>Número de pedido</span>
+        <strong>{{ orderNumber() }}</strong>
+      </div>
+      <p class="confirm-info">
+        Recibirás un correo con los detalles de tu pedido en breve.
+        El tiempo estimado de entrega es de 2 a 5 días hábiles.
+      </p>
+      <div class="confirm-actions">
+        <a routerLink="/" class="btn-home">
+          <i class="fa-solid fa-house"></i> Volver al inicio
+        </a>
+        <a routerLink="/catalogo" class="btn-shop-more">
+          <i class="fa-solid fa-store"></i> Seguir comprando
+        </a>
+      </div>
+    </div>
+    }
+
+    @if (step() !== 'confirmacion') {
+    <div class="checkout-layout">
+
+      <!-- FORMULARIOS -->
+      <div class="checkout-forms">
+
+        <!-- PASO 1: DATOS PERSONALES -->
+        @if (step() === 'datos') {
+        <div class="form-card">
+          <h2 class="form-title">
+            <i class="fa-solid fa-user"></i> Datos personales y envío
+          </h2>
+
+          <form [formGroup]="personalForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Nombre *</label>
+                <input type="text" formControlName="firstName" placeholder="Juan" />
+                @if (personalForm.controls.firstName.touched && personalForm.controls.firstName.invalid) {
+                <span class="err">Nombre requerido (mín. 2 caracteres)</span>
+                }
+              </div>
+              <div class="form-group">
+                <label>Apellido *</label>
+                <input type="text" formControlName="lastName" placeholder="Pérez" />
+                @if (personalForm.controls.lastName.touched && personalForm.controls.lastName.invalid) {
+                <span class="err">Apellido requerido</span>
+                }
+              </div>
+              <div class="form-group">
+                <label>Correo electrónico *</label>
+                <input type="email" formControlName="email" placeholder="juan@email.com" />
+                @if (personalForm.controls.email.touched && personalForm.controls.email.invalid) {
+                <span class="err">Email inválido</span>
+                }
+              </div>
+              <div class="form-group">
+                <label>Teléfono *</label>
+                <input type="tel" formControlName="phone" placeholder="999888777" maxlength="9" />
+                @if (personalForm.controls.phone.touched && personalForm.controls.phone.invalid) {
+                <span class="err">Teléfono debe tener 9 dígitos</span>
+                }
+              </div>
+              <div class="form-group">
+                <label>Tipo de documento *</label>
+                <select formControlName="documentType">
+                  <option value="DNI">DNI</option>
+                  <option value="RUC">RUC</option>
+                  <option value="CE">Carné de Extranjería</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Número de documento *</label>
+                <input type="text" formControlName="documentNumber" placeholder="12345678" />
+                @if (personalForm.controls.documentNumber.touched && personalForm.controls.documentNumber.invalid) {
+                <span class="err">Documento inválido</span>
+                }
+              </div>
+            </div>
+
+            <h3 class="sub-title"><i class="fa-solid fa-location-dot"></i> Dirección de envío</h3>
+
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Dirección *</label>
+                <input type="text" formControlName="addressLine" placeholder="Av. La Marina 1234, Dpto 501" />
+                @if (personalForm.controls.addressLine.touched && personalForm.controls.addressLine.invalid) {
+                <span class="err">Dirección requerida</span>
+                }
+              </div>
+              <div class="form-group">
+                <label>Departamento *</label>
+                <select formControlName="department">
+                  @for (dept of departments; track dept) {
+                  <option [value]="dept">{{ dept }}</option>
+                  }
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Provincia *</label>
+                <input type="text" formControlName="province" placeholder="Lima" />
+              </div>
+              <div class="form-group">
+                <label>Distrito *</label>
+                <input type="text" formControlName="district" placeholder="Miraflores" />
+                @if (personalForm.controls.district.touched && personalForm.controls.district.invalid) {
+                <span class="err">Distrito requerido</span>
+                }
+              </div>
+              <div class="form-group">
+                <label>Referencia</label>
+                <input type="text" formControlName="reference" placeholder="Frente al parque" />
+              </div>
+            </div>
+          </form>
+        </div>
+        }
+
+        <!-- PASO 2: PAGO -->
+        @if (step() === 'pago') {
+        <div class="form-card">
+          <h2 class="form-title">
+            <i class="fa-solid fa-credit-card"></i> Método de pago
+          </h2>
+
+          <!-- Selector de método -->
+          <div class="payment-methods">
+            @for (method of paymentMethods; track method.id) {
+            <button type="button" class="payment-option" [class.selected]="selectedPayment() === method.id"
+              (click)="selectedPayment.set(method.id)">
+              <i [class]="method.icon"></i>
+              <span>{{ method.label }}</span>
+              @if (selectedPayment() === method.id) {
+              <i class="fa-solid fa-circle-check check-icon"></i>
+              }
+            </button>
+            }
+          </div>
+
+          <!-- Formulario tarjeta -->
+          @if (isCardPayment()) {
+          <div class="card-form">
+            <h3 class="sub-title">Datos de la tarjeta</h3>
+            <form [formGroup]="cardForm">
+              <div class="form-group full">
+                <label>Número de tarjeta *</label>
+                <div class="card-input-wrap">
+                  <i class="fa-solid fa-credit-card"></i>
+                  <input type="text" placeholder="1234 5678 9012 3456" maxlength="19"
+                    (input)="formatCardNumber($event)" />
+                </div>
+                @if (cardForm.controls.cardNumber.touched && cardForm.controls.cardNumber.invalid) {
+                <span class="err">Número de tarjeta inválido (16 dígitos)</span>
+                }
+              </div>
+              <div class="form-group full">
+                <label>Nombre en la tarjeta *</label>
+                <input type="text" formControlName="cardName" placeholder="JUAN PEREZ"
+                  style="text-transform: uppercase" />
+                @if (cardForm.controls.cardName.touched && cardForm.controls.cardName.invalid) {
+                <span class="err">Nombre requerido</span>
+                }
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Vencimiento *</label>
+                  <input type="text" formControlName="cardExpiry" placeholder="MM/AA" maxlength="5"
+                    (input)="formatExpiry($event)" />
+                  @if (cardForm.controls.cardExpiry.touched && cardForm.controls.cardExpiry.invalid) {
+                  <span class="err">Formato MM/AA</span>
+                  }
+                </div>
+                <div class="form-group">
+                  <label>CVV *</label>
+                  <input type="password" formControlName="cardCvv" placeholder="•••" maxlength="4" />
+                  @if (cardForm.controls.cardCvv.touched && cardForm.controls.cardCvv.invalid) {
+                  <span class="err">CVV inválido</span>
+                  }
+                </div>
+              </div>
+            </form>
+          </div>
+          }
+
+          <!-- Yape / Plin -->
+          @if (selectedPayment() === 'YAPE' || selectedPayment() === 'PLIN') {
+          <div class="mobile-payment-info">
+            <div class="qr-placeholder">
+              <i class="fa-solid fa-qrcode"></i>
+              <p>Escanea el código QR con {{ selectedPayment() === 'YAPE' ? 'Yape' : 'Plin' }}</p>
+              <strong>+51 999 808 501</strong>
+              <span>Monto a pagar: S/ {{ total() | number:'1.2-2' }}</span>
+            </div>
+            <p class="mobile-hint">
+              <i class="fa-solid fa-circle-info"></i>
+              Al confirmar el pedido, recibirás instrucciones para completar el pago.
+            </p>
+          </div>
+          }
+
+          <!-- Transferencia -->
+          @if (selectedPayment() === 'TRANSFER') {
+          <div class="bank-info">
+            <h3 class="sub-title">Datos para la transferencia</h3>
+            <div class="bank-details">
+              <div class="bank-row"><span>Banco:</span><strong>BCP</strong></div>
+              <div class="bank-row"><span>Cuenta corriente:</span><strong>193-123456789-0-12</strong></div>
+              <div class="bank-row"><span>CCI:</span><strong>002-193-001234567890-12</strong></div>
+              <div class="bank-row"><span>Titular:</span><strong>PixelBase Technologies S.A.C.</strong></div>
+              <div class="bank-row"><span>Monto:</span><strong class="amount">S/ {{ total() | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+            <p class="bank-hint">
+              <i class="fa-solid fa-circle-info"></i>
+              Envía el voucher de pago a <strong>pagos@pixelbase.pe</strong>
+            </p>
+          </div>
+          }
+
+          <!-- Seguridad -->
+          <div class="security-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Tus datos están protegidos con cifrado SSL de 256 bits</span>
+          </div>
+        </div>
+        }
+
+        <!-- Navegación entre pasos -->
+        <div class="step-nav">
+          @if (step() === 'pago') {
+          <button class="btn-back" (click)="prevStep()">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+          </button>
+          } @else {
+          <a routerLink="/carrito" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Volver al carrito
+          </a>
+          }
+
+          <button class="btn-next" [disabled]="processing()" (click)="nextStep()">
+            @if (processing()) {
+            <span class="spinner-sm"></span> Procesando...
+            } @else if (step() === 'pago') {
+            <i class="fa-solid fa-lock"></i> Confirmar pedido
+            } @else {
+            Continuar al pago <i class="fa-solid fa-arrow-right"></i>
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- RESUMEN LATERAL -->
+      <aside class="checkout-summary">
+        <div class="summary-card">
+          <h3>Tu pedido</h3>
+          <div class="summary-items">
+            @for (item of items(); track item.slug) {
+            <div class="summary-item">
+              <div class="summary-img">
+                @if (item.imageUrl) {
+                <img [src]="item.imageUrl" [alt]="item.name" />
+                } @else {
+                <i class="fa-solid fa-image"></i>
+                }
+                <span class="qty-badge">{{ item.quantity }}</span>
+              </div>
+              <div class="summary-item-info">
+                <span class="summary-name">{{ item.name }}</span>
+                <span class="summary-brand">{{ item.brandName }}</span>
+              </div>
+              <span class="summary-price">S/ {{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+            </div>
+            }
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>S/ {{ subtotal() | number:'1.2-2' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Envío</span>
+            @if (shipping() === 0) {
+            <strong class="free">Gratis</strong>
+            } @else {
+            <strong>S/ {{ shipping() | number:'1.2-2' }}</strong>
+            }
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong>S/ {{ total() | number:'1.2-2' }}</strong>
+          </div>
+          @if (step() === 'pago') {
+          <div class="payment-label">
+            <i class="fa-solid fa-credit-card"></i>
+            {{ getPaymentLabel() }}
+          </div>
+          }
+        </div>
+      </aside>
+
+    </div>
+    }
+  </div>
+</main>
+
+<app-footer></app-footer>

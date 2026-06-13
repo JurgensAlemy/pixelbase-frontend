@@ -1,0 +1,174 @@
+<app-header></app-header>
+
+<main class="producto-page">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a routerLink="/">Inicio</a>
+    <i class="fa-solid fa-chevron-right"></i>
+    <a routerLink="/catalogo">Catálogo</a>
+    @if (product()) {
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>{{ product()!.name }}</span>
+    }
+  </nav>
+
+  @if (loading()) {
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando producto...</p>
+  </div>
+  }
+
+  @if (error()) {
+  <div class="error-state">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <h2>{{ error() }}</h2>
+    <a routerLink="/catalogo">Volver al catálogo</a>
+  </div>
+  }
+
+  @if (!loading() && product(); as p) {
+  <div class="product-layout">
+
+    <!-- GALERÍA -->
+    <div class="gallery">
+      <div class="main-image">
+        @if (selectedImage()) {
+        <img [src]="selectedImage()!" [alt]="p.name" />
+        } @else {
+        <div class="no-image"><i class="fa-solid fa-image"></i></div>
+        }
+        @if (hasDiscount()) {
+        <span class="discount-badge">-{{ discountPercent() }}%</span>
+        }
+      </div>
+      @if ((p.images?.length ?? 0) > 1) {
+      <div class="thumbnails">
+        @for (img of p.images; track img.id) {
+        <button class="thumb" [class.active]="selectedImage() === img.url" (click)="selectImage(img.url)">
+          <img [src]="img.url" [alt]="img.altText" />
+        </button>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+      <div class="brand-cat">
+        <span class="brand-pill">{{ p.brand.name }}</span>
+        <span class="cat-pill">{{ p.category.name }}</span>
+      </div>
+
+      <h1 class="product-title">{{ p.name }}</h1>
+
+      <div class="sku-row">
+        <span class="sku-label">SKU:</span> <span>{{ p.sku }}</span>
+        <span class="sep">|</span>
+        <span class="sku-label">Parte:</span> <span>{{ p.partNumber }}</span>
+      </div>
+
+      <!-- Precio -->
+      <div class="price-block">
+        @if (p.originalPrice) {
+        <span class="original-price">S/ {{ p.originalPrice | number:'1.2-2' }}</span>
+        }
+        <span class="current-price">S/ {{ p.price | number:'1.2-2' }}</span>
+        @if (hasDiscount()) {
+        <span class="discount-tag">-{{ discountPercent() }}% OFF</span>
+        }
+      </div>
+
+      <p class="installments">
+        <i class="fa-solid fa-credit-card"></i>
+        Hasta 12 cuotas de S/ {{ (p.price / 12) | number:'1.2-2' }} sin interés
+      </p>
+
+      <!-- Stock -->
+      <div class="stock-row">
+        @if (p.stock > 5) {
+        <span class="in-stock"><i class="fa-solid fa-circle-check"></i> En stock ({{ p.stock }} disponibles)</span>
+        } @else if (p.stock > 0) {
+        <span class="low-stock"><i class="fa-solid fa-triangle-exclamation"></i> ¡Solo {{ p.stock }} en stock!</span>
+        } @else {
+        <span class="no-stock"><i class="fa-solid fa-ban"></i> Sin stock</span>
+        }
+      </div>
+
+      <!-- Cantidad -->
+      @if (p.stock > 0) {
+      <div class="quantity-row">
+        <span class="qty-label">Cantidad:</span>
+        <div class="qty-control">
+          <button (click)="decreaseQty()" [disabled]="quantity() <= 1">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+          <span>{{ quantity() }}</span>
+          <button (click)="increaseQty()" [disabled]="quantity() >= p.stock">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      }
+
+      <!-- Botones de acción -->
+      <div class="actions">
+        <button class="btn-add-cart" [disabled]="p.stock === 0" [class.added]="addedToCart()" (click)="addToCart()">
+          @if (addedToCart()) {
+          <i class="fa-solid fa-check"></i> ¡Añadido!
+          } @else {
+          <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
+          }
+        </button>
+        <a routerLink="/carrito" class="btn-buy-now" [class.disabled]="p.stock === 0">
+          <i class="fa-solid fa-bolt"></i> Comprar ahora
+        </a>
+      </div>
+
+      <!-- Beneficios -->
+      <div class="benefits">
+        <div class="benefit"><i class="fa-solid fa-truck-fast"></i><span>Envío gratis en compras mayores a S/ 299</span>
+        </div>
+        <div class="benefit"><i class="fa-solid fa-shield-halved"></i><span>Garantía oficial del fabricante</span></div>
+        <div class="benefit"><i class="fa-solid fa-rotate-left"></i><span>Devoluciones hasta 30 días</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCRIPCIÓN Y ESPECIFICACIONES -->
+  <div class="product-details-tabs">
+    @if (p.description) {
+    <section class="detail-section">
+      <h2><i class="fa-solid fa-align-left"></i> Descripción</h2>
+      <p>{{ p.description }}</p>
+    </section>
+    }
+
+    @if (specsEntries().length > 0) {
+    <section class="detail-section">
+      <h2><i class="fa-solid fa-list-check"></i> Especificaciones técnicas</h2>
+      <table class="specs-table">
+        <tbody>
+          @for (spec of specsEntries(); track spec.key) {
+          <tr>
+            <td class="spec-key">{{ spec.key }}</td>
+            <td class="spec-val">{{ spec.value }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    }
+  </div>
+  }
+</main>
+
+<app-footer></app-footer>
+
+@if (toastMessage()) {
+<div class="cart-toast">
+  <i class="fa-solid fa-circle-check"></i>
+  <span>{{ toastMessage() }}</span>
+</div>
+}

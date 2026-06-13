@@ -1,0 +1,514 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.producto-page {
+  @include container;
+  padding-top: $spacing-6;
+  padding-bottom: $spacing-12;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  margin-bottom: $spacing-8;
+  flex-wrap: wrap;
+
+  a {
+    color: $primary;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  i {
+    font-size: 0.6rem;
+  }
+
+  span {
+    color: $color-text;
+  }
+}
+
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 80px 20px;
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid $gray-200;
+    border-top-color: $primary;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto $spacing-4;
+  }
+
+  i {
+    font-size: 3rem;
+    color: $warning;
+    margin-bottom: $spacing-4;
+    display: block;
+  }
+
+  h2 {
+    color: $navy;
+    margin-bottom: $spacing-4;
+  }
+
+  a {
+    color: $primary;
+    font-weight: 700;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-10;
+  margin-bottom: $spacing-10;
+
+  @include md-down {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== GALERÍA ===== */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+.main-image {
+  position: relative;
+  background: $gray-100;
+  border-radius: $radius-xl;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid $color-border;
+
+  img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+
+  .no-image {
+    font-size: 5rem;
+    color: $gray-300;
+  }
+}
+
+.discount-badge {
+  position: absolute;
+  top: $spacing-4;
+  left: $spacing-4;
+  background: $danger;
+  color: $white;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $radius-full;
+}
+
+.thumbnails {
+  display: flex;
+  gap: $spacing-3;
+  flex-wrap: wrap;
+}
+
+.thumb {
+  width: 72px;
+  height: 72px;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  background: $gray-100;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 4px;
+  transition: border-color $transition-base;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &.active {
+    border-color: $primary;
+  }
+
+  &:hover {
+    border-color: $primary;
+  }
+}
+
+/* ===== INFO ===== */
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+}
+
+.brand-cat {
+  display: flex;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.brand-pill {
+  background: rgba($primary, 0.1);
+  color: $primary;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: $radius-full;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cat-pill {
+  background: $gray-100;
+  color: $color-text-muted;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: $radius-full;
+}
+
+.product-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: $navy;
+  line-height: 1.2;
+
+  @include md-down {
+    font-size: 1.4rem;
+  }
+}
+
+.sku-row {
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+
+  .sku-label {
+    font-weight: 700;
+  }
+
+  .sep {
+    color: $gray-300;
+  }
+}
+
+.price-block {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-3;
+  flex-wrap: wrap;
+}
+
+.original-price {
+  font-size: 1.1rem;
+  color: $color-text-muted;
+  text-decoration: line-through;
+}
+
+.current-price {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: $danger;
+}
+
+.discount-tag {
+  background: rgba($danger, 0.1);
+  color: $danger;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $radius-full;
+}
+
+.installments {
+  font-size: 0.875rem;
+  color: $success;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.stock-row {
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  .in-stock {
+    color: $success;
+  }
+
+  .low-stock {
+    color: $warning;
+  }
+
+  .no-stock {
+    color: $danger;
+  }
+
+  i {
+    margin-right: $spacing-2;
+  }
+}
+
+.quantity-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+
+  .qty-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $color-text;
+  }
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  button {
+    width: 40px;
+    height: 40px;
+    background: $gray-100;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: $color-text;
+    transition: background $transition-base;
+
+    &:hover:not(:disabled) {
+      background: $gray-200;
+    }
+
+    &:disabled {
+      color: $gray-300;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    width: 50px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+}
+
+.btn-add-cart {
+  flex: 1;
+  min-width: 180px;
+  padding: $spacing-4 $spacing-6;
+  background: $primary;
+  color: $white;
+  border: none;
+  border-radius: $radius-lg;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-3;
+  transition: all $transition-base;
+  font-family: inherit;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: $gray-200;
+    color: $gray-500;
+    cursor: not-allowed;
+  }
+
+  &.added {
+    background: $success;
+  }
+}
+
+.btn-buy-now {
+  flex: 1;
+  min-width: 160px;
+  padding: $spacing-4 $spacing-6;
+  background: #facc15;
+  color: #422006;
+  border-radius: $radius-lg;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-3;
+  transition: all $transition-base;
+
+  &:hover {
+    background: #fde047;
+    transform: translateY(-2px);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  padding: $spacing-5;
+  background: $gray-100;
+  border-radius: $radius-lg;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  font-size: 0.85rem;
+  color: $color-text;
+
+  i {
+    color: $success;
+    width: 18px;
+    text-align: center;
+  }
+}
+
+/* ===== SPECS ===== */
+.product-details-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+  border-top: 1px solid $color-border;
+  padding-top: $spacing-8;
+}
+
+.detail-section {
+  background: $white;
+  border-radius: $radius-xl;
+  padding: $spacing-8;
+  border: 1px solid $color-border;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $navy;
+    margin-bottom: $spacing-5;
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    i {
+      color: $primary;
+      font-size: 1rem;
+    }
+  }
+
+  p {
+    color: $color-text;
+    line-height: 1.7;
+  }
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr:nth-child(even) td {
+    background: $gray-100;
+  }
+
+  td {
+    padding: $spacing-3 $spacing-4;
+    font-size: 0.875rem;
+    border-bottom: 1px solid $color-border;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .spec-key {
+    font-weight: 700;
+    color: $navy;
+    width: 35%;
+    min-width: 150px;
+  }
+
+  .spec-val {
+    color: $color-text;
+  }
+}
+
+/* ===== TOAST ===== */
+.cart-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #0f172a;
+  color: $white;
+  padding: $spacing-4 $spacing-6;
+  border-radius: $radius-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 2000;
+  box-shadow: $shadow-xl;
+  animation: slide-in 0.3s ease;
+
+  i {
+    color: #34d399;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

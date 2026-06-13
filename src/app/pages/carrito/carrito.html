@@ -1,0 +1,119 @@
+<app-header></app-header>
+
+<main class="carrito-page">
+  <div class="carrito-container">
+
+    <div class="carrito-header">
+      <h1><i class="fa-solid fa-bag-shopping"></i> Mi Carrito</h1>
+      <span class="item-count">{{ cart.totalItems() }} producto{{ cart.totalItems() !== 1 ? 's' : '' }}</span>
+    </div>
+
+    @if (cart.items().length === 0) {
+    <div class="empty-cart">
+      <div class="empty-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+      <h2>Tu carrito está vacío</h2>
+      <p>Agrega productos desde el catálogo para comenzar tu compra.</p>
+      <a routerLink="/catalogo" class="btn-shop">
+        <i class="fa-solid fa-store"></i> Ir al catálogo
+      </a>
+    </div>
+    } @else {
+    <div class="carrito-layout">
+
+      <!-- ITEMS -->
+      <div class="items-section">
+        @for (item of cart.items(); track item.slug) {
+        <div class="cart-item">
+          <div class="item-image">
+            @if (item.imageUrl) {
+            <img [src]="item.imageUrl" [alt]="item.name" />
+            } @else {
+            <i class="fa-solid fa-image"></i>
+            }
+          </div>
+          <div class="item-details">
+            <span class="item-brand">{{ item.brandName }}</span>
+            <a [routerLink]="['/producto', item.slug]" class="item-name">{{ item.name }}</a>
+            @if (item.originalPrice) {
+            <span class="item-old-price">S/ {{ item.originalPrice | number:'1.2-2' }}</span>
+            }
+            <span class="item-price">S/ {{ item.price | number:'1.2-2' }}</span>
+          </div>
+          <div class="item-controls">
+            <div class="qty-control">
+              <button (click)="cart.updateQuantity(item.slug, item.quantity - 1)">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <input type="number" [value]="item.quantity" min="1" [max]="item.stock"
+                (change)="updateQty(item.slug, $event)" />
+              <button (click)="cart.updateQuantity(item.slug, item.quantity + 1)"
+                [disabled]="item.quantity >= item.stock">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <div class="item-subtotal">
+              S/ {{ (item.price * item.quantity) | number:'1.2-2' }}
+            </div>
+            <button class="remove-btn" (click)="remove(item.slug)" title="Eliminar">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- RESUMEN -->
+      <aside class="order-summary">
+        <div class="summary-card">
+          <h3>Resumen del pedido</h3>
+
+          <div class="summary-row">
+            <span>Subtotal ({{ cart.totalItems() }} items)</span>
+            <strong>S/ {{ cart.subtotal() | number:'1.2-2' }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Envío</span>
+            @if (cart.shipping() === 0) {
+            <strong class="free">¡Gratis!</strong>
+            } @else {
+            <strong>S/ {{ cart.shipping() | number:'1.2-2' }}</strong>
+            }
+          </div>
+          @if (cart.shipping() > 0) {
+          <p class="shipping-hint">
+            <i class="fa-solid fa-truck-fast"></i>
+            Agrega S/ {{ (299 - cart.subtotal()) | number:'1.2-2' }} más para envío gratis
+          </p>
+          }
+
+          <div class="summary-divider"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong>S/ {{ cart.total() | number:'1.2-2' }}</strong>
+          </div>
+
+          <a routerLink="/checkout" class="btn-checkout">
+            <i class="fa-solid fa-lock"></i> Proceder al pago
+          </a>
+          <a routerLink="/catalogo" class="btn-continue">
+            <i class="fa-solid fa-arrow-left"></i> Seguir comprando
+          </a>
+
+          <div class="payment-badges">
+            <span>Pagos seguros con:</span>
+            <div class="badges-row">
+              <span class="pay-badge">VISA</span>
+              <span class="pay-badge">MC</span>
+              <span class="pay-badge">Yape</span>
+              <span class="pay-badge">Plin</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+    }
+  </div>
+</main>
+
+<app-footer></app-footer>

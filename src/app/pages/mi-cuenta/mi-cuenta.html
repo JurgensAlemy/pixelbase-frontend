@@ -1,0 +1,87 @@
+<app-header></app-header>
+
+<main class="cuenta-page">
+  <div class="cuenta-container">
+
+    <div class="cuenta-header">
+      <div class="user-avatar">{{ initials }}</div>
+      <div class="user-info">
+        <h1>{{ user()?.email }}</h1>
+        <span class="role-badge">{{ roleLabel }}</span>
+      </div>
+    </div>
+
+    <div class="cuenta-grid">
+
+      <!-- Sidebar de navegación -->
+      <aside class="cuenta-nav">
+        <a class="nav-item active">
+          <i class="fa-solid fa-user"></i> Mi perfil
+        </a>
+        <a class="nav-item">
+          <i class="fa-solid fa-box"></i> Mis pedidos
+        </a>
+        <a class="nav-item">
+          <i class="fa-solid fa-location-dot"></i> Direcciones
+        </a>
+        <a class="nav-item">
+          <i class="fa-solid fa-heart"></i> Favoritos
+        </a>
+        <button class="nav-item logout" (click)="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+        </button>
+      </aside>
+
+      <!-- Contenido -->
+      <div class="cuenta-content">
+
+        <!-- Datos de la cuenta -->
+        <section class="content-card">
+          <h2><i class="fa-solid fa-id-card"></i> Información de la cuenta</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Correo electrónico</span>
+              <strong>{{ user()?.email }}</strong>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Tipo de cuenta</span>
+              <strong>{{ roleLabel }}</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pedidos -->
+        <section class="content-card">
+          <h2><i class="fa-solid fa-box"></i> Mis pedidos</h2>
+          <div class="empty-block">
+            <i class="fa-solid fa-receipt"></i>
+            <h3>Próximamente</h3>
+            <p>
+              El historial de pedidos estará disponible cuando se habilite
+              el endpoint correspondiente en el backend.
+            </p>
+            <a routerLink="/catalogo" class="btn-link">
+              Ir al catálogo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </section>
+
+        <!-- Direcciones -->
+        <section class="content-card">
+          <h2><i class="fa-solid fa-location-dot"></i> Mis direcciones</h2>
+          <div class="empty-block">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <h3>Próximamente</h3>
+            <p>
+              La gestión de direcciones guardadas estará disponible cuando
+              se habilite el endpoint correspondiente en el backend.
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

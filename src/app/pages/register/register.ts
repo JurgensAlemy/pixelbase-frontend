@@ -48,7 +48,8 @@ export class Register {
     this.auth.register({ email, password }).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/dashboard']);
+        const target = this.auth.isAdmin() ? '/dashboard' : '/mi-cuenta';
+        this.router.navigate([target]);
       },
       error: (err) => {
         this.loading.set(false);

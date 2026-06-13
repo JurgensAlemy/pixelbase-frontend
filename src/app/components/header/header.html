@@ -17,41 +17,51 @@
 
   <div class="main-header">
     <div class="main-header-inner">
-      <div class="logo">
+      <a [routerLink]="['/']" class="logo">
         <img src="img/logo-pixelBase.png" alt="PixelBase Logo">
-      </div>
+      </a>
 
       <div class="search-container">
         <select class="search-category">
           <option>Todas las categorías</option>
         </select>
-        <input type="text" class="search-input" placeholder="¿Qué estás buscando hoy?" />
-        <button class="search-button">
+        <input type="text" class="search-input" placeholder="¿Qué estás buscando hoy?" [value]="searchQuery()"
+          (input)="onSearch($event)" (keydown)="onSearchKeydown($event)" />
+        <button class="search-button" (click)="submitSearch()">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>
 
       <div class="user-actions">
-        <a href="#" class="action-item">
+        @if (auth.isAuthenticated()) {
+        <a [routerLink]="[auth.isAdmin() ? '/dashboard' : '/mi-cuenta']" class="action-item">
+          <i class="fa-regular fa-user"></i>
+          <div class="action-text">
+            <span>{{ auth.currentUser()?.email?.split('@')?.[0] }}</span>
+            <strong>Mi cuenta <i class="fa-solid fa-chevron-down" style="font-size:10px"></i></strong>
+          </div>
+        </a>
+        } @else {
+        <a [routerLink]="['/login']" class="action-item">
           <i class="fa-regular fa-user"></i>
           <div class="action-text">
             <span>Hola, ingresa</span>
-            <strong>
-              Mi cuenta
-              <i class="fa-solid fa-chevron-down" style="font-size: 10px"></i>
-            </strong>
+            <strong>Mi cuenta <i class="fa-solid fa-chevron-down" style="font-size:10px"></i></strong>
           </div>
         </a>
+        }
 
         <a href="#" class="action-item">
           <i class="fa-regular fa-heart"></i>
           <strong>Favoritos</strong>
         </a>
 
-        <a href="#" class="cart-button">
+        <a [routerLink]="['/carrito']" class="cart-button">
           <i class="fa-solid fa-bag-shopping"></i>
-          <strong>S/ 0</strong>
-          <span class="cart-badge">3</span>
+          <strong>S/ {{ cart.total() | number:'1.2-2' }}</strong>
+          @if (cart.totalItems() > 0) {
+          <span class="cart-badge">{{ cart.totalItems() }}</span>
+          }
         </a>
       </div>
     </div>
@@ -59,18 +69,18 @@
 
   <div class="nav-bar">
     <div class="nav-bar-inner">
-      <button class="btn-categories">
+      <a [routerLink]="['/catalogo']" class="btn-categories">
         <i class="fa-solid fa-bars"></i> Categorías
-      </button>
+      </a>
 
       <nav class="nav-links">
-        <a href="#">Computadoras</a>
-        <a href="#">Gaming</a>
-        <a href="#">Laptops</a>
-        <a href="#">Componentes</a>
-        <a href="#">Periféricos</a>
-        <a href="#">Monitores</a>
-        <a href="#">Redes</a>
+        <a (click)="goToCategory('Computadoras', 'computadora')">Computadoras</a>
+        <a (click)="goToCategory('Gaming', 'gaming')">Gaming</a>
+        <a (click)="goToCategory('Laptops', 'laptop')">Laptops</a>
+        <a (click)="goToCategory('Componentes', 'componente')">Componentes</a>
+        <a (click)="goToCategory('Periféricos', 'periférico')">Periféricos</a>
+        <a (click)="goToCategory('Monitores', 'monitor')">Monitores</a>
+        <a (click)="goToCategory('Redes', 'red')">Redes</a>
       </nav>
 
       <div class="flash-offers">
