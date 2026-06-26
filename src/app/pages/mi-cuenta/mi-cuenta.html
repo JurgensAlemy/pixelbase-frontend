@@ -13,32 +13,48 @@
 
     <div class="cuenta-grid">
 
-      <!-- Sidebar de navegación -->
       <aside class="cuenta-nav">
-        <a class="nav-item active">
+        <a class="nav-item" [class.active]="activeTab() === 'perfil'" (click)="activeTab.set('perfil')">
           <i class="fa-solid fa-user"></i> Mi perfil
         </a>
-        <a class="nav-item">
+        <a class="nav-item" [class.active]="activeTab() === 'pedidos'" (click)="activeTab.set('pedidos')">
           <i class="fa-solid fa-box"></i> Mis pedidos
         </a>
-        <a class="nav-item">
+        <a class="nav-item" [class.active]="activeTab() === 'direcciones'" (click)="activeTab.set('direcciones')">
           <i class="fa-solid fa-location-dot"></i> Direcciones
-        </a>
-        <a class="nav-item">
-          <i class="fa-solid fa-heart"></i> Favoritos
         </a>
         <button class="nav-item logout" (click)="logout()">
           <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
         </button>
       </aside>
 
-      <!-- Contenido -->
       <div class="cuenta-content">
 
-        <!-- Datos de la cuenta -->
+        <!-- PERFIL -->
+        @if (activeTab() === 'perfil') {
         <section class="content-card">
           <h2><i class="fa-solid fa-id-card"></i> Información de la cuenta</h2>
           <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Nombre</span>
+              <strong>{{ profileData()?.firstName || 'No registrado' }}</strong>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Apellidos</span>
+              <strong>{{ profileData()?.lastName || 'No registrado' }}</strong>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Teléfono</span>
+              <strong>{{ profileData()?.phone || 'No registrado' }}</strong>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Documento</span>
+              <strong>
+                {{ profileData()?.documentType && profileData()?.documentNumber
+                ? profileData()?.documentType + ' ' + profileData()?.documentNumber
+                : 'No registrado' }}
+              </strong>
+            </div>
             <div class="info-item">
               <span class="info-label">Correo electrónico</span>
               <strong>{{ user()?.email }}</strong>
@@ -49,36 +65,161 @@
             </div>
           </div>
         </section>
+        }
 
-        <!-- Pedidos -->
+        <!-- PEDIDOS -->
+        @if (activeTab() === 'pedidos') {
         <section class="content-card">
           <h2><i class="fa-solid fa-box"></i> Mis pedidos</h2>
+
+          @if (loadingOrders()) {
+          <div class="empty-block">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <p>Cargando pedidos...</p>
+          </div>
+          } @else if (orders().length === 0) {
           <div class="empty-block">
             <i class="fa-solid fa-receipt"></i>
-            <h3>Próximamente</h3>
-            <p>
-              El historial de pedidos estará disponible cuando se habilite
-              el endpoint correspondiente en el backend.
-            </p>
+            <h3>Sin pedidos aún</h3>
+            <p>Cuando realices una compra, aparecerá aquí tu historial.</p>
             <a routerLink="/catalogo" class="btn-link">
               Ir al catálogo <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
+          } @else {
+          <div class="orders-list">
+            @for (order of orders(); track order.orderCode) {
+            <div class="order-card">
+              <div class="order-header">
+                <div>
+                  <span class="order-code">{{ order.orderCode }}</span>
+                  <span class="order-date">{{ order.createdAt | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <span class="order-status" [class]="getStatusClass(order.status)">
+                  {{ getStatusLabel(order.status) }}
+                </span>
+              </div>
+              <div class="order-footer">
+                <span>{{ order.itemCount ?? order.items?.length ?? 0 }} producto(s)</span>
+                <strong>S/ {{ order.totalPrice | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+            }
+          </div>
+          }
         </section>
+        }
 
-        <!-- Direcciones -->
+        <!-- DIRECCIONES -->
+        @if (activeTab() === 'direcciones') {
         <section class="content-card">
-          <h2><i class="fa-solid fa-location-dot"></i> Mis direcciones</h2>
+          <div class="card-header-row">
+            <h2><i class="fa-solid fa-location-dot"></i> Mis direcciones</h2>
+            <button class="btn-add" (click)="showAddressForm.set(!showAddressForm())">
+              <i class="fa-solid fa-plus"></i>
+              {{ showAddressForm() ? 'Cancelar' : 'Nueva dirección' }}
+            </button>
+          </div>
+
+          <!-- Formulario nueva dirección -->
+          @if (showAddressForm()) {
+          <div class="address-form-box">
+            <form [formGroup]="addressForm">
+              <div class="addr-form-grid">
+                <div class="form-group full">
+                  <label>Dirección *</label>
+                  <input type="text" formControlName="addressLine" placeholder="Av. La Marina 1234, Dpto 501" />
+                  @if (addressForm.controls.addressLine.touched && addressForm.controls.addressLine.invalid) {
+                  <span class="err">Dirección requerida</span>
+                  }
+                </div>
+                <div class="form-group">
+                  <label>Departamento *</label>
+                  <select formControlName="department">
+                    @for (dept of departments; track dept) {
+                    <option [value]="dept">{{ dept }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Provincia *</label>
+                  <input type="text" formControlName="province" placeholder="Lima" />
+                </div>
+                <div class="form-group">
+                  <label>Distrito *</label>
+                  <input type="text" formControlName="district" placeholder="Miraflores" />
+                  @if (addressForm.controls.district.touched && addressForm.controls.district.invalid) {
+                  <span class="err">Distrito requerido</span>
+                  }
+                </div>
+                <div class="form-group">
+                  <label>Referencia</label>
+                  <input type="text" formControlName="reference" placeholder="Frente al parque" />
+                </div>
+              </div>
+
+              @if (addressError()) {
+              <div class="addr-error">
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ addressError() }}
+              </div>
+              }
+
+              <div class="addr-form-actions">
+                <button type="button" class="btn-cancel-addr" (click)="showAddressForm.set(false)">
+                  Cancelar
+                </button>
+                <button type="button" class="btn-save-addr" [disabled]="savingAddress()" (click)="saveAddress()">
+                  @if (savingAddress()) {
+                  <span class="spinner-xs"></span> Guardando...
+                  } @else {
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar dirección
+                  }
+                </button>
+              </div>
+            </form>
+          </div>
+          }
+
+          <!-- Lista de direcciones -->
+          @if (loadingAddresses()) {
+          <div class="empty-block">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <p>Cargando direcciones...</p>
+          </div>
+          } @else if (addresses().length === 0 && !showAddressForm()) {
           <div class="empty-block">
             <i class="fa-solid fa-map-location-dot"></i>
-            <h3>Próximamente</h3>
-            <p>
-              La gestión de direcciones guardadas estará disponible cuando
-              se habilite el endpoint correspondiente en el backend.
-            </p>
+            <h3>Sin direcciones guardadas</h3>
+            <p>Agrega una dirección para agilizar tus próximas compras.</p>
           </div>
+          } @else {
+          <div class="address-list">
+            @for (addr of addresses(); track addr.id) {
+            <div class="address-card" [class.default]="addr.isDefault">
+              @if (addr.isDefault) {
+              <span class="default-badge">Predeterminada</span>
+              }
+              <p class="addr-line">{{ addr.addressLine }}</p>
+              <p class="addr-details">{{ addr.district }}, {{ addr.province }}, {{ addr.department }}</p>
+              @if (addr.reference) {
+              <p class="addr-ref"><i class="fa-solid fa-circle-info"></i> {{ addr.reference }}</p>
+              }
+              <div class="addr-actions">
+                @if (!addr.isDefault) {
+                <button class="btn-addr-action" (click)="setDefaultAddress(addr.id)">
+                  <i class="fa-solid fa-star"></i> Predeterminar
+                </button>
+                }
+                <button class="btn-addr-delete" (click)="deleteAddress(addr.id)">
+                  <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+              </div>
+            </div>
+            }
+          </div>
+          }
         </section>
-
+        }
       </div>
     </div>
   </div>

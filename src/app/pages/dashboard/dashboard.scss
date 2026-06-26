@@ -13,55 +13,6 @@
   gap: 20px;
 }
 
-/* --- Mock chart --- */
-.mock-chart {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  height: 250px;
-  padding-top: 20px;
-  border-bottom: 1px solid var(--admin-border);
-  position: relative;
-}
-
-.chart-grid-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  border-top: 1px dashed #e2e8f0;
-  z-index: 1;
-
-  &--top    { top: 20px;  }
-  &--mid    { top: 90px;  }
-  &--bottom { top: 160px; }
-}
-
-.bar-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  width: 40px;
-  z-index: 2;
-}
-
-.bar {
-  width: 100%;
-  background-color: #bfdbfe;
-  border-radius: 6px 6px 0 0;
-  transition: background-color 0.3s;
-
-  &:hover  { background-color: #60a5fa; }
-  &.active { background-color: var(--admin-blue); }
-}
-
-.bar-label {
-  font-size: 12px;
-  color: var(--admin-text-light);
-  font-weight: 600;
-
-  &--active { color: var(--admin-blue); }
-}
 
 /* --- Lista Top productos --- */
 .top-products-list {
@@ -127,4 +78,11 @@
 /* --- Responsive --- */
 @media (max-width: 1024px) {
   .middle-grid { grid-template-columns: 1fr; }
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  padding: 8px 0 4px;
 }

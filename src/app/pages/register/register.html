@@ -6,14 +6,12 @@
         <div class="register-logo">
           <img src="img/logo-pixelBase.png" alt="PixelBase">
         </div>
-
         <div class="info-content">
           <span class="admin-badge">CREAR CUENTA</span>
-          <h1>Únete a PixelBase y empieza a vender.</h1>
-          <p>Crea tu cuenta en segundos y accede a todas las herramientas para gestionar tu tienda desde el primer día.
-          </p>
+          <h1>Únete a PixelBase y empieza a comprar.</h1>
+          <p>Crea tu cuenta en segundos y accede a todas las herramientas para gestionar tus pedidos desde el primer
+            día.</p>
         </div>
-
         <div class="features-list">
           <div class="feature-item">
             <div class="feature-icon"><i class="fa-solid fa-rocket"></i></div>
@@ -31,6 +29,16 @@
       </div>
 
       <div class="register-form-container">
+
+        <!-- Botón volver (solo en paso 1) -->
+        @if (step() === 'cuenta') {
+        <a routerLink="/" class="btn-back-home">
+          <i class="fa-solid fa-arrow-left"></i> Volver al inicio
+        </a>
+        }
+
+        <!-- ===== PASO 1: CUENTA ===== -->
+        @if (step() === 'cuenta') {
         <div class="form-header">
           <h2>Crear cuenta ✨</h2>
           <p>Completa los datos para registrarte en PixelBase.</p>
@@ -56,7 +64,6 @@
             <div class="input-wrapper">
               <i class="fa-solid fa-lock"></i>
               <input type="password" formControlName="password" placeholder="Mínimo 12 caracteres">
-              <i class="fa-regular fa-eye toggle-password"></i>
             </div>
             @if (password.touched && password.invalid) {
             <small class="field-error">
@@ -72,7 +79,6 @@
             <div class="input-wrapper">
               <i class="fa-solid fa-lock"></i>
               <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña">
-              <i class="fa-regular fa-eye toggle-password"></i>
             </div>
             @if (confirmPassword.touched && confirmPassword.errors?.['required']) {
             <small class="field-error">Confirma tu contraseña</small>
@@ -87,19 +93,105 @@
           }
 
           <button type="submit" class="btn-register" [disabled]="loading()">
-            @if (loading()) {
-            Creando cuenta...
-            } @else {
-            Crear cuenta <i class="fa-solid fa-arrow-right"></i>
-            }
+            @if (loading()) { Creando cuenta... }
+            @else { Continuar <i class="fa-solid fa-arrow-right"></i> }
           </button>
 
           <div class="form-footer">
             <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
           </div>
         </form>
-      </div>
+        }
 
+        <!-- ===== PASO 2: PERFIL ===== -->
+        @if (step() === 'perfil') {
+        <div class="form-header">
+          <div class="step-badge">
+            <i class="fa-solid fa-circle-check" style="color: #22c55e"></i>
+            Cuenta creada
+          </div>
+          <h2>Completa tu perfil 👤</h2>
+          <p>Estos datos agilizarán tus compras. Puedes omitirlos y completarlos después desde "Mi cuenta".</p>
+        </div>
+
+        <form class="register-form" [formGroup]="profileForm" (ngSubmit)="submitProfile()">
+          <div class="form-row-2">
+            <div class="input-group">
+              <label>Nombre *</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" formControlName="firstName" placeholder="Juan" (keydown)="onlyLettersKey($event)">
+              </div>
+              @if (profileError('firstName'); as err) {
+              <small class="field-error">{{ err }}</small>
+              }
+            </div>
+            <div class="input-group">
+              <label>Apellidos *</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" formControlName="lastName" placeholder="Pérez García"
+                  (keydown)="onlyLettersKey($event)">
+              </div>
+              @if (profileError('lastName'); as err) {
+              <small class="field-error">{{ err }}</small>
+              }
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Teléfono * <small>(9 dígitos)</small></label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-phone"></i>
+              <input type="tel" formControlName="phone" placeholder="999888777" maxlength="9"
+                (keydown)="onlyDigitsKey($event)">
+            </div>
+            @if (profileError('phone'); as err) {
+            <small class="field-error">{{ err }}</small>
+            }
+          </div>
+
+          <div class="form-row-2">
+            <div class="input-group">
+              <label>Tipo de documento *</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-id-card"></i>
+                <select formControlName="documentType" style="padding-left: 2.5rem">
+                  <option value="DNI">DNI (8 dígitos)</option>
+                  <option value="RUC">RUC (11 dígitos)</option>
+                  <option value="CE">CE (9 dígitos)</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Número de documento *</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-hashtag"></i>
+                <input type="text" formControlName="documentNumber" placeholder="12345678" [maxlength]="docMaxLength"
+                  (keydown)="onlyDigitsKey($event)">
+              </div>
+              @if (profileError('documentNumber'); as err) {
+              <small class="field-error">{{ err }}</small>
+              }
+            </div>
+          </div>
+
+          @if (errorMessage()) {
+          <div class="error-message">{{ errorMessage() }}</div>
+          }
+
+          <button type="submit" class="btn-register" [disabled]="loading()">
+            @if (loading()) { Guardando... }
+            @else { Guardar y entrar <i class="fa-solid fa-arrow-right"></i> }
+          </button>
+
+          <button type="button" class="btn-skip" (click)="skipProfile()">
+            Omitir por ahora
+          </button>
+        </form>
+        }
+
+      </div>
     </div>
   </div>
 </div>

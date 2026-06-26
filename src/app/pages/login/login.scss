@@ -26,7 +26,9 @@
   overflow: hidden;
   box-shadow: 0 20px 60px rgba($navy, 0.08);
 
-  @include md-down { grid-template-columns: 1fr; }
+  @include md-down {
+    grid-template-columns: 1fr;
+  }
 }
 
 // ============================================================
@@ -131,7 +133,9 @@
   flex-direction: column;
   justify-content: center;
 
-  @include md-down { padding: $spacing-8 $spacing-6; }
+  @include md-down {
+    padding: $spacing-8 $spacing-6;
+  }
 
   .form-header {
     margin-bottom: $spacing-8;
@@ -177,7 +181,9 @@
       color: $primary;
       text-decoration: none;
 
-      &:hover { text-decoration: underline; }
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -186,7 +192,7 @@
     display: flex;
     align-items: center;
 
-    > i {
+    >i {
       position: absolute;
       left: $spacing-4;
       color: $color-text-muted;
@@ -287,7 +293,29 @@
       text-decoration: none;
       font-weight: $font-weight-semibold;
 
-      &:hover { text-decoration: underline; }
+      &:hover {
+        text-decoration: underline;
+      }
     }
+  }
+}
+
+.btn-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #718096;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.2s ease;
+
+  i {
+    font-size: 0.75rem;
+  }
+
+  &:hover {
+    color: #0066CC;
   }
 }

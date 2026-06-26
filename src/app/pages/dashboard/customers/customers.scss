@@ -13,8 +13,13 @@
   padding: 10px 18px;
   border-radius: 10px;
   border: none;
-  background-color: var(--admin-blue);
-  color: white;
+
+  /* CAMBIOS AQUÍ */
+  background-color: white;
+  /* Fondo blanco como la imagen */
+  color: var(--admin-blue, #0d6efd);
+  /* Texto azul (usa la variable o el azul por defecto) */
+
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -22,12 +27,17 @@
   box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
 
   &:hover {
-    filter: brightness(1.08);
+    filter: brightness(0.95);
+    /* Oscurece un poco el blanco al pasar el mouse */
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(13, 110, 253, 0.28);
   }
 
-  i { font-size: 12px; }
+  i {
+    font-size: 12px;
+    color: var(--admin-blue, #0d6efd);
+    /* Cambia también el color del icono si lleva uno */
+  }
 }
 
 /* --- Toolbar --- */
@@ -97,7 +107,9 @@
     background-repeat: no-repeat;
     background-position: right 10px center;
 
-    &:focus { border-color: var(--admin-blue); }
+    &:focus {
+      border-color: var(--admin-blue);
+    }
   }
 }
 
@@ -109,8 +121,13 @@
 }
 
 /* --- Celdas específicas de la tabla --- */
-.text-center { text-align: center; }
-.text-right  { text-align: right;  }
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
 
 .contact-cell {
   display: flex;
@@ -138,10 +155,25 @@
 }
 
 /* --- Segmentos (pills propias del módulo) --- */
-.segment-vip      { background-color: #fef3c7; color: #b45309; }
-.segment-active   { background-color: #dcfce7; color: var(--admin-green); }
-.segment-new      { background-color: #f3e8ff; color: var(--admin-purple); }
-.segment-inactive { background-color: #f1f5f9; color: #64748b; }
+.segment-vip {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.segment-active {
+  background-color: #dcfce7;
+  color: var(--admin-green);
+}
+
+.segment-new {
+  background-color: #f3e8ff;
+  color: var(--admin-purple);
+}
+
+.segment-inactive {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
 
 /* --- Estado vacío --- */
 .empty-state {
@@ -217,11 +249,17 @@
   gap: 6px;
   margin-top: 4px;
 
-  i { color: #94a3b8; }
+  i {
+    color: #94a3b8;
+  }
 }
 
 /* --- Secciones --- */
-.detail-section { display: flex; flex-direction: column; gap: 12px; }
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 .detail-heading {
   display: flex;
@@ -233,7 +271,10 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
 
-  i { font-size: 10px; color: var(--admin-blue); }
+  i {
+    font-size: 10px;
+    color: var(--admin-blue);
+  }
 }
 
 /* --- Grid de info de contacto --- */
@@ -242,7 +283,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 
-  @media (max-width: 540px) { grid-template-columns: 1fr; }
+  @media (max-width: 540px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .info-cell {
@@ -253,7 +296,9 @@
   flex-direction: column;
   gap: 3px;
 
-  &--full { grid-column: 1 / -1; }
+  &--full {
+    grid-column: 1 / -1;
+  }
 }
 
 .info-label {
@@ -277,7 +322,9 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 
-  @media (max-width: 540px) { grid-template-columns: 1fr; }
+  @media (max-width: 540px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .profile-stat {
@@ -304,11 +351,18 @@
   line-height: 1.1;
 }
 
-.text-green { color: var(--admin-green) !important; }
+.text-green {
+  color: var(--admin-green) !important;
+}
 
 /* --- Historial de pedidos dentro del modal --- */
 .history-table {
-  th, td { padding: 10px 12px; font-size: 13px; }
+
+  th,
+  td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }
 
 .history-empty {
@@ -318,8 +372,15 @@
   border-radius: 12px;
   color: var(--admin-text-light);
 
-  i { font-size: 28px; color: #cbd5e1; margin-bottom: 10px; }
-  p { font-size: 13px; }
+  i {
+    font-size: 28px;
+    color: #cbd5e1;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 13px;
+  }
 }
 
 /* ============================================================
@@ -336,7 +397,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 14px;
 
-  @media (max-width: 480px) { grid-template-columns: 1fr; }
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-group {
@@ -396,7 +459,9 @@
     color: #64748b;
     line-height: 1.5;
 
-    strong { color: #0f172a; }
+    strong {
+      color: #0f172a;
+    }
   }
 }
 
@@ -415,9 +480,17 @@
 /* --- Responsive --- */
 @media (max-width: 768px) {
   .customers-toolbar {
-    .search-field { min-width: 100%; }
-    .result-count { margin-left: 0; }
+    .search-field {
+      min-width: 100%;
+    }
+
+    .result-count {
+      margin-left: 0;
+    }
   }
 
-  .profile-block { flex-direction: column; text-align: center; }
+  .profile-block {
+    flex-direction: column;
+    text-align: center;
+  }
 }

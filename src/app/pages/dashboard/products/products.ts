@@ -1,20 +1,22 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, OnInit, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminSidebar } from '../components/admin-sidebar/admin-sidebar';
 import { AdminHeader } from '../components/admin-header/admin-header';
+import { AdminProductService } from '../../../services/admin-product.service';
 
 type StockLevel = 'in' | 'low' | 'out';
-type ModalMode = 'closed' | 'create' | 'edit' | 'delete-confirm';
+type ModalMode = 'closed' | 'create' | 'edit' | 'detail' | 'delete-confirm';
 
 interface AdminProduct {
-  id: number;
+  id: string;
   name: string;
   brand: string;
-  category: string;
+  category?: string;
   price: number;
   stock: number;
-  image: string;
+  image?: string;
+  sku?: string;
 }
 
 const DEFAULT_IMAGE = '/img/generated-1776449462383.png';
@@ -26,27 +28,23 @@ const DEFAULT_IMAGE = '/img/generated-1776449462383.png';
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
-export class Products {
+export class Products implements OnInit {
+  private productService = inject(AdminProductService);
   private fb = inject(FormBuilder);
 
-  readonly products = signal<AdminProduct[]>([
-    { id: 1,  name: 'GeForce RTX 4090 24GB',      brand: 'NVIDIA',   category: 'GPUs',           price: 1799, stock: 12, image: '/img/generated-1776449462383.png' },
-    { id: 2,  name: 'Ryzen 9 7950X 16 cores',     brand: 'AMD',      category: 'CPUs',           price: 2199, stock: 3,  image: '/img/generated-1776449484740.png' },
-    { id: 3,  name: 'Vengeance DDR5 64GB RGB',    brand: 'CORSAIR',  category: 'RAM',            price: 1249, stock: 21, image: '/img/generated-1776449488887.png' },
-    { id: 4,  name: 'SSD 990 Pro 2TB NVMe',       brand: 'SAMSUNG',  category: 'Almacenamiento', price: 749,  stock: 18, image: '/img/generated-1776449494133.png' },
-    { id: 5,  name: 'G Pro X Superlight Mouse',   brand: 'LOGITECH', category: 'Periféricos',    price: 389,  stock: 0,  image: '/img/generated-1776451650381.png' },
-    { id: 6,  name: 'ROG Swift 27" 240Hz Monitor',brand: 'ASUS',     category: 'Monitores',      price: 2369, stock: 7,  image: '/img/generated-1776453894572.png' },
-    { id: 7,  name: 'Kraken X63 RGB Cooler',      brand: 'NZXT',     category: 'Refrigeración',  price: 600,  stock: 5,  image: '/img/generated-1776450176480.png' },
-    { id: 8,  name: 'Ryzen 7 7800X3D',            brand: 'AMD',      category: 'CPUs',           price: 1530, stock: 14, image: '/img/generated-1776450244346.png' },
-    { id: 9,  name: 'K70 RGB PRO Mechanical',     brand: 'CORSAIR',  category: 'Periféricos',    price: 760,  stock: 11, image: '/img/generated-1776454451190.png' },
-    { id: 10, name: 'ROG Strix G15',              brand: 'ASUS',     category: 'Laptops',        price: 5850, stock: 0,  image: '/img/generated-1776449606200.png' },
-  ]);
-
+  readonly products = signal<AdminProduct[]>([]);
+  readonly loading = signal(false);
   readonly searchQuery = signal('');
   readonly selectedCategory = signal('Todas');
+  readonly currentPage = signal(0);
+  readonly pageSize = signal(20);
 
   readonly categories = computed<string[]>(() => {
-    const cats = new Set(this.products().map((p) => p.category));
+    const cats = new Set(
+      this.products()
+        .map((p) => p.category || '')
+        .filter(Boolean)
+    );
     return ['Todas', ...Array.from(cats).sort()];
   });
 
@@ -58,8 +56,8 @@ export class Products {
       const matchesQuery =
         !q ||
         p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q);
+        (p.brand?.toLowerCase().includes(q) ?? false) ||
+        (p.category?.toLowerCase().includes(q) ?? false);
       return matchesCat && matchesQuery;
     });
   });
@@ -74,7 +72,7 @@ export class Products {
     };
   });
 
-  /* ----------- Estado del modal ----------- */
+  /* ---------- Modal ---------- */
   readonly modalMode = signal<ModalMode>('closed');
   readonly selectedProduct = signal<AdminProduct | null>(null);
 
@@ -87,6 +85,26 @@ export class Products {
     image: [DEFAULT_IMAGE, Validators.required],
   });
 
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.loading.set(true);
+    this.productService.getAllProducts(this.currentPage(), this.pageSize()).subscribe({
+      next: (res) => {
+        const data = res.content ?? res ?? [];
+        this.products.set(Array.isArray(data) ? data : []);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Error cargando productos:', err);
+        this.loading.set(false);
+      }
+    });
+  }
+
+  /* ---------- Helpers ---------- */
   stockLevel(stock: number): StockLevel {
     if (stock === 0) return 'out';
     if (stock <= 10) return 'low';
@@ -99,6 +117,7 @@ export class Products {
     return 'En stock';
   }
 
+  /* ---------- Event handlers ---------- */
   onSearch(event: Event): void {
     this.searchQuery.set((event.target as HTMLInputElement).value);
   }
@@ -107,7 +126,7 @@ export class Products {
     this.selectedCategory.set((event.target as HTMLSelectElement).value);
   }
 
-  /* ----------- Acciones de modal ----------- */
+  /* ---------- Modal Actions ---------- */
   openCreate(): void {
     this.selectedProduct.set(null);
     this.form.reset({
@@ -126,10 +145,10 @@ export class Products {
     this.form.reset({
       name: product.name,
       brand: product.brand,
-      category: product.category,
+      category: product.category || '',
       price: product.price,
       stock: product.stock,
-      image: product.image,
+      image: product.image || DEFAULT_IMAGE,
     });
     this.modalMode.set('edit');
   }
@@ -154,22 +173,37 @@ export class Products {
     const current = this.selectedProduct();
 
     if (current) {
-      this.products.update((list) =>
-        list.map((p) => (p.id === current.id ? { ...current, ...value } : p)),
-      );
+      // Editar
+      this.productService.updateProduct(current.id, value).subscribe({
+        next: () => {
+          this.loadProducts();
+          this.closeModal();
+        },
+        error: (err) => console.error('Error actualizando producto:', err)
+      });
     } else {
-      const nextId = Math.max(0, ...this.products().map((p) => p.id)) + 1;
-      this.products.update((list) => [{ id: nextId, ...value }, ...list]);
+      // Crear
+      this.productService.createProduct(value).subscribe({
+        next: () => {
+          this.loadProducts();
+          this.closeModal();
+        },
+        error: (err) => console.error('Error creando producto:', err)
+      });
     }
-
-    this.closeModal();
   }
 
   confirmDelete(): void {
     const product = this.selectedProduct();
     if (!product) return;
-    this.products.update((list) => list.filter((p) => p.id !== product.id));
-    this.closeModal();
+
+    this.productService.deleteProduct(product.id).subscribe({
+      next: () => {
+        this.loadProducts();
+        this.closeModal();
+      },
+      error: (err) => console.error('Error eliminando producto:', err)
+    });
   }
 
   @HostListener('document:keydown.escape')

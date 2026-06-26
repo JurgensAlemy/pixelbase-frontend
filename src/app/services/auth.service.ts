@@ -26,6 +26,11 @@ export class AuthService {
     );
   }
 
+  getProfile(): Observable<any> {
+    // Apuntamos al endpoint correcto del CustomerProfileController
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/customer/profile`);
+  }
+
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);

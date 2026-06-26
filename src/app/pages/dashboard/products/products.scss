@@ -72,7 +72,9 @@
     background-repeat: no-repeat;
     background-position: right 10px center;
 
-    &:focus { border-color: var(--admin-blue); }
+    &:focus {
+      border-color: var(--admin-blue);
+    }
   }
 }
 
@@ -91,8 +93,13 @@
   padding: 10px 18px;
   border-radius: 10px;
   border: none;
-  background-color: var(--admin-blue);
-  color: white;
+
+  /* CAMBIOS AQUÍ */
+  background-color: white;
+  /* Fondo blanco como la imagen */
+  color: var(--admin-blue, #0d6efd);
+  /* Texto azul (usa la variable o el azul por defecto) */
+
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -100,13 +107,19 @@
   box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
 
   &:hover {
-    filter: brightness(1.08);
+    filter: brightness(0.95);
+    /* Oscurece un poco el blanco al pasar el mouse */
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(13, 110, 253, 0.28);
   }
 
-  i { font-size: 12px; }
+  i {
+    font-size: 12px;
+    color: var(--admin-blue, #0d6efd);
+    /* Cambia también el color del icono si lleva uno */
+  }
 }
+
 
 /* --- Grilla de productos --- */
 .products-grid-admin {
@@ -129,7 +142,9 @@
     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
     border-color: rgba(13, 110, 253, 0.3);
 
-    .card-actions { opacity: 1; }
+    .card-actions {
+      opacity: 1;
+    }
   }
 }
 
@@ -159,9 +174,20 @@
   font-weight: 700;
   letter-spacing: 0.2px;
 
-  &.stock-in  { background-color: #dcfce7; color: var(--admin-green);  }
-  &.stock-low { background-color: #fef3c7; color: #b45309;             }
-  &.stock-out { background-color: #fee2e2; color: var(--admin-red);    }
+  &.stock-in {
+    background-color: #dcfce7;
+    color: var(--admin-green);
+  }
+
+  &.stock-low {
+    background-color: #fef3c7;
+    color: #b45309;
+  }
+
+  &.stock-out {
+    background-color: #fee2e2;
+    color: var(--admin-red);
+  }
 }
 
 .card-actions {
@@ -190,12 +216,20 @@
 
   &.action-edit {
     color: var(--admin-blue);
-    &:hover { background-color: var(--admin-blue); color: white; }
+
+    &:hover {
+      background-color: var(--admin-blue);
+      color: white;
+    }
   }
 
   &.action-delete {
     color: var(--admin-red);
-    &:hover { background-color: var(--admin-red); color: white; }
+
+    &:hover {
+      background-color: var(--admin-red);
+      color: white;
+    }
   }
 }
 
@@ -245,7 +279,9 @@
   font-weight: 800;
   color: var(--admin-text-dark);
 
-  &::before { content: ''; }
+  &::before {
+    content: '';
+  }
 }
 
 .card-stock {
@@ -256,7 +292,9 @@
   font-weight: 600;
   color: var(--admin-text-light);
 
-  i { font-size: 11px; }
+  i {
+    font-size: 11px;
+  }
 }
 
 /* --- Estado vacío (sin resultados de búsqueda) --- */
@@ -295,7 +333,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 14px;
 
-  @media (max-width: 480px) { grid-template-columns: 1fr; }
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-group {
@@ -343,7 +383,9 @@
   gap: 12px;
   align-items: center;
 
-  input { flex: 1; }
+  input {
+    flex: 1;
+  }
 }
 
 .image-preview {
@@ -387,7 +429,9 @@
     color: #64748b;
     line-height: 1.5;
 
-    strong { color: #0f172a; }
+    strong {
+      color: #0f172a;
+    }
   }
 }
 
@@ -406,7 +450,12 @@
 /* --- Responsive --- */
 @media (max-width: 768px) {
   .products-toolbar {
-    .search-field { min-width: 100%; }
-    .result-count { margin-left: 0; }
+    .search-field {
+      min-width: 100%;
+    }
+
+    .result-count {
+      margin-left: 0;
+    }
   }
 }

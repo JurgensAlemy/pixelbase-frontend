@@ -721,3 +721,130 @@
     background: $primary-dark;
   }
 }
+
+// Delivery toggle
+.delivery-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  button {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid $color-border;
+    border-radius: $radius-md;
+    background: $white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all $transition-base;
+    font-family: inherit;
+
+    &.active {
+      border-color: $primary;
+      background: rgba($primary, 0.06);
+      color: $primary;
+    }
+  }
+}
+
+// Store list
+.store-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.store-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  background: $white;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all $transition-base;
+  width: 100%;
+
+  i:first-child {
+    color: $primary;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong {
+      font-size: 0.9rem;
+      color: $navy;
+    }
+
+    span {
+      font-size: 0.78rem;
+      color: $color-text-muted;
+    }
+  }
+
+  .check-icon {
+    color: $primary;
+  }
+
+  &.selected {
+    border-color: $primary;
+    background: rgba($primary, 0.05);
+  }
+}
+
+// Recipient toggle
+.recipient-toggle {
+  margin: 20px 0 8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $navy;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: $primary;
+    cursor: pointer;
+  }
+}
+
+// Error banner
+.error-banner {
+  background: rgba(#e53935, 0.08);
+  border: 1px solid #e53935;
+  color: #c62828;
+  padding: 12px 16px;
+  border-radius: $radius-md;
+  font-size: 0.87rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.info-note {
+  color: $color-text-muted;
+  font-size: 0.85rem;
+  padding: 12px 0;
+}
